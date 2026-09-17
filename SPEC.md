@@ -1,6 +1,6 @@
 # Frostify – Spezifikation (Phase 1)
 
-**Stand:** 2026-09-17 · **Status:** Entwurf zur Freigabe · **Autor:** Claude Code für Raphi
+**Stand:** 2026-09-17 · **Status:** vollständig geklärt, wartet auf Freigabe · **Autor:** Claude Code für Raphi
 
 Native iOS-App zur Verwaltung des Tiefkühler-Inhalts. Ziel: nichts geht vergessen,
 nichts landet abgelaufen im Abfall. Die Daten werden mit Raphis Partnerin geteilt.
@@ -21,6 +21,7 @@ nichts landet abgelaufen im Abfall. Die Daten werden mit Raphis Partnerin geteil
 | Archiv & Statistik | **Ja**. |
 | Einkaufsliste | **Nicht in v1** (bewusst verschoben). |
 | Mindest-iOS | **iOS 26** – "das Beste, was ab iOS 26 passt". |
+| Bundle ID | **`ch.hebera.frostify`** |
 
 ---
 
@@ -308,14 +309,13 @@ Frostify/
   von Anfang an über String Catalog lokalisiert.
 - Farben nie als einziger Träger einer Information – die Ampel hat immer Symbol und Text.
 
-### 6.4 Lokaler Modus
+### 6.4 iCloud von Anfang an
 
-iCloud und CloudKit setzen das kostenpflichtige Apple Developer Program voraus
-(99 $/Jahr). Damit du nicht blockiert bist, bis das erledigt ist, bekommt die App ein
-Flag, das alle Cloud-Funktionen sauber abschaltet und rein lokal weiterläuft. Alles
-ausser dem Teilen kannst du dann sofort testen.
-
----
+Das Apple Developer Program ist vorhanden, iCloud und CloudKit stehen also ab dem
+ersten Tag zur Verfügung. Ein separater "lokaler Modus" als Überbrückung entfällt
+damit – das spart einen Sonderfall, den sonst jede Datenzugriffsstelle mittragen
+müsste. Ohne iCloud-Anmeldung läuft die App trotzdem: Core Data arbeitet dann rein
+lokal weiter und gleicht ab, sobald eine Anmeldung vorliegt.
 
 ## 7. Begleitende Dokumente
 
@@ -330,20 +330,20 @@ Werden ab Phase 2 mitgeführt und bei jeder relevanten Änderung nachgezogen:
 
 ---
 
-## 8. Offene Entscheidungen
+## 8. Getroffene Entscheidungen
 
-| # | Punkt | Meine Empfehlung, wenn du nichts anderes sagst |
+Alle in der Erstfassung offenen Punkte sind entschieden:
+
+| # | Punkt | Entscheid |
 |---|---|---|
-| 1 | Apple Developer Program (99 $/Jahr) – schon vorhanden? | Falls nein: mit lokalem Modus starten, Sharing danach scharf schalten. |
-| 2 | Bundle Identifier | `ch.hebera.frostify` |
-| 3 | Foto pro Eintrag | Nicht in v1 – CloudKit-Datenvolumen und Erfassungsaufwand stehen dem Nutzen entgegen. Nachrüstbar. |
-| 4 | Mehrere Tiefkühler | Datenmodell kann es (Freezer als Wurzel), Oberfläche in v1 auf einen beschränkt. |
-| 5 | Ampel-Schwellen (7/30 Tage) | Fest in v1, in den Einstellungen nachrüstbar. |
-| 6 | Widget / Sperrbildschirm / Apple Watch | Nicht in v1. |
-| 7 | Einkaufs-/Nachfüllliste | Bewusst v2. |
-| 8 | App-Icon | Brauche ich von dir: 1024×1024 px PNG, ohne Alphakanal, randlos, sRGB. Bis dahin ein schlichtes Platzhalter-Icon. |
-
----
+| 1 | Apple Developer Program | **Vorhanden** – CloudKit und Sharing ab Tag 1, kein lokaler Überbrückungsmodus |
+| 2 | Bundle Identifier | **`ch.hebera.frostify`** |
+| 3 | Foto pro Eintrag | **Nein** |
+| 4 | Mehrere Tiefkühler | **Einer.** Das Datenmodell behält `Freezer` als Wurzel (nötig für CloudKit-Sharing), die Oberfläche zeigt aber keine Verwaltung mehrerer Tiefkühler |
+| 5 | Ampel-Schwellen | **Fest:** 🟢 > 30 Tage · 🟡 8–30 Tage · 🟠 0–7 Tage · 🔴 überschritten |
+| 6 | Widget / Sperrbildschirm / Apple Watch | **Nein** |
+| 7 | Einkaufs-/Nachfüllliste | **Nein** |
+| 8 | App-Icon | Raphi liefert es am Schluss. Bis dahin schlichter Platzhalter; der finale Austausch steht als Punkt in `RELEASE.md` (1024×1024 px PNG, ohne Alphakanal, randlos, sRGB) |
 
 ## 9. Ehrliche Einschränkung
 
