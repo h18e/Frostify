@@ -70,6 +70,8 @@ struct ReminderSettingsView: View {
                 Text("System")
             }
         }
+        .listRowBackground(Theme.surface)
+        .themedList()
         .navigationTitle("Erinnerungen")
         .navigationBarTitleDisplayMode(.inline)
         .task {

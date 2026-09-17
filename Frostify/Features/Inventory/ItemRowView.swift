@@ -6,26 +6,26 @@ struct ItemRowView: View {
 
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
-            Image(systemName: item.category.symbolName)
-                .font(.title3)
-                .foregroundStyle(.secondary)
-                .frame(width: 28)
-                .accessibilityHidden(true)
+            CategoryIcon(category: item.category)
 
-            VStack(alignment: .leading, spacing: 4) {
-                Text(item.displayName)
-                    .font(.body)
-                    .fontWeight(.medium)
-
-                Text(item.quantitySummary)
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+            VStack(alignment: .leading, spacing: 3) {
+                HStack(alignment: .firstTextBaseline, spacing: 8) {
+                    Text(item.displayName)
+                        .font(.subheadline.weight(.medium))
+                        .foregroundStyle(Theme.textPrimary)
+                        .lineLimit(1)
+                    Spacer(minLength: 4)
+                    Text(item.quantitySummary)
+                        .font(.caption.weight(.semibold))
+                        .monospacedDigit()
+                        .foregroundStyle(Theme.textPrimary)
+                }
 
                 if !item.noteText.isEmpty {
                     Text(item.noteText)
                         .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .lineLimit(2)
+                        .foregroundStyle(Theme.textSecondary)
+                        .lineLimit(1)
                 }
 
                 HStack(spacing: 6) {
@@ -35,14 +35,15 @@ struct ItemRowView: View {
                     )
                     if !item.storageLocationText.isEmpty {
                         Label(item.storageLocationText, systemImage: "tray")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+                            .font(.caption2)
+                            .foregroundStyle(Theme.textTertiary)
+                            .lineLimit(1)
                     }
                 }
-                .padding(.top, 2)
+                .padding(.top, 1)
             }
         }
-        .padding(.vertical, 2)
+        .padding(.vertical, 4)
         .accessibilityElement(children: .combine)
     }
 }
@@ -53,6 +54,9 @@ struct ItemRowView: View {
     List {
         ForEach(items, id: \.objectID) { item in
             ItemRowView(item: item, table: ShelfLifeTable())
+                .listRowBackground(Theme.surface)
         }
     }
+    .themedList()
+    .preferredColorScheme(.dark)
 }

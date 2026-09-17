@@ -141,8 +141,10 @@ Fest verdrahtete Liste (als Swift-Enum), Richtwert je Kategorie in `FreezerSetti
 ### 3.1 Übersicht (Startbildschirm)
 - Als Raphi sehe ich beim Öffnen sofort, was bald abläuft: oberste Zeile
   "3 Produkte laufen diese Woche ab" – antippbar als Filter.
-- Liste aller aktiven Einträge, wahlweise gruppiert nach **Kategorie**, **Lagerort**
-  oder **Ablauf**; sortierbar nach "empfohlen bis", Einfrierdatum oder Name.
+- Liste aller aktiven Einträge, gruppiert nach **Ablauf**, **Kategorie** oder
+  **Lagerort** – die Umschaltung steht sichtbar über der Liste, nicht in einem Menü.
+  Jeder Abschnittskopf nennt Anzahl und Portionen. Sortierbar nach "empfohlen bis",
+  Einfrierdatum, Name oder Kategorie.
 - Jede Zeile: Name, Restmenge + Einheit, Restportionen, Ampel, Lagerort.
 - Volltextsuche über Name, Bemerkung und Lagerort.
 - Wischgesten: links → "Entnehmen", rechts → "Details".
@@ -174,9 +176,11 @@ Fest verdrahtete Liste (als Swift-Enum), Richtwert je Kategorie in `FreezerSetti
 ### 3.5 Archiv & Statistik
 - Archiv: alle abgeschlossenen Einträge, filterbar nach "gegessen"/"weggeworfen",
   Zeitraum und Kategorie. Wiederherstellen ist möglich (Fehlbedienung).
-- Statistik: pro Kategorie, was ihr durchschnittlich wie lange lagert, wie viel
-  aufgebraucht und wie viel weggeworfen wurde. Daraus lassen sich die Richtwerte
-  gezielt justieren.
+- Statistik: gezählt werden **einzelne Entnahmen**, nicht abgeschlossene Einträge.
+  Jede Entnahme trägt ihren Anteil am Eintrag (200 g von 400 g = 0,5), wodurch
+  Gramm, Stück und Beutel vergleichbar werden. Angezeigt werden Anzahl gegessener
+  und weggeworfener Entnahmen, die nach Menge gewichtete Verlustquote und die
+  durchschnittliche Lagerdauer – gesamt und je Kategorie.
 
 ### 3.6 Einstellungen
 - **Teilen**: Tiefkühler mit Partnerin teilen, Teilnehmer sehen, Freigabe beenden.
@@ -304,7 +308,10 @@ Frostify/
 
 ### 6.3 Gestaltung und Sprache
 
-- Apple HIG, Dark Mode von Anfang an, Dynamic Type, SF Symbols, VoiceOver-Beschriftungen.
+- Apple HIG, **Dark Mode als einziges Erscheinungsbild**, Dynamic Type, SF Symbols,
+  VoiceOver-Beschriftungen. Farb- und Flächensystem aus Räpplispauter übernommen
+  (`Theme.swift`, `Components.swift`); Akzentfarbe ist das Türkis aus dessen
+  Kategorienpalette, damit Grün der Ampelstufe „in Ordnung" vorbehalten bleibt.
 - App-Sprache: **Hochdeutsch in Schweizer Schreibweise** (kein ß), Du-Form,
   von Anfang an über String Catalog lokalisiert.
 - Farben nie als einziger Träger einer Information – die Ampel hat immer Symbol und Text.

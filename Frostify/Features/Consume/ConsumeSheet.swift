@@ -117,6 +117,8 @@ struct ConsumeSheet: View {
                     .buttonStyle(.bordered)
                 }
             }
+            .listRowBackground(Theme.surface)
+            .themedList()
             .navigationTitle("Entnehmen")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

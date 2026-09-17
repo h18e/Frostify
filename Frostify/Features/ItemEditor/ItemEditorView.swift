@@ -39,6 +39,8 @@ struct ItemEditorView: View {
                     barcodeSection(barcode)
                 }
             }
+            .listRowBackground(Theme.surface)
+            .themedList()
             .navigationTitle(isEditing ? "Eintrag bearbeiten" : "Neuer Eintrag")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

@@ -28,6 +28,8 @@ struct SharingView: View {
 
             explanationSection
         }
+        .listRowBackground(Theme.surface)
+        .themedList()
         .navigationTitle("Teilen")
         .navigationBarTitleDisplayMode(.inline)
         .task(id: reloadToken) {

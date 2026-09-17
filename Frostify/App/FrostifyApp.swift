@@ -29,6 +29,11 @@ struct FrostifyApp: App {
                 .environment(\.inventory, repository)
                 .environmentObject(preferences)
                 .environment(\.notificationScheduler, notificationScheduler)
+                // Dark Mode ist das primaere (und einzige) Erscheinungsbild.
+                // Zusaetzlich steht UIUserInterfaceStyle = Dark in den Build-Einstellungen,
+                // damit auch System-Dialoge (Teilen, Scanner) dunkel erscheinen.
+                .preferredColorScheme(.dark)
+                .tint(Theme.accent)
                 .task {
                     // Beim Start neu planen: die Sammelmeldung nennt eine Anzahl, die
                     // sich seit dem letzten Planen geaendert haben kann.

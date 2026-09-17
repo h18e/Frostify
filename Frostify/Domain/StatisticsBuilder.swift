@@ -1,90 +1,148 @@
 import Foundation
 
-/// Eingabe fuer die Statistik – bewusst ein einfacher Wert ohne Core-Data-Bezug,
-/// damit die Auswertung ohne Datenbank getestet werden kann.
+/// Eine einzelne Entnahme – die Grundeinheit der Auswertung.
+///
+/// Bewusst je Entnahme und **nicht** je Eintrag: Wer eine von zwei Portionen isst
+/// und die zweite wegwirft, hat eine Portion gegessen und eine weggeworfen. Eine
+/// Auswertung, die nur den abgeschlossenen Eintrag zaehlt, kann das nicht abbilden –
+/// sie müsste sich für „gegessen" oder „weggeworfen" entscheiden und verlöre die
+/// andere Hälfte.
+struct ConsumptionSnapshot: Equatable, Sendable {
+    var category: FoodCategory
+    var date: Date
+    var kind: ConsumptionKind
+    /// Anteil des ursprünglichen Eintrags, den diese Entnahme ausmacht (0…1).
+    ///
+    /// Macht Mengen über Einheiten hinweg vergleichbar: 200 g von 400 g und
+    /// 1 Beutel von 2 Beuteln sind beide 0,5.
+    var share: Double
+
+    init(category: FoodCategory, date: Date, kind: ConsumptionKind, share: Double) {
+        self.category = category
+        self.date = date
+        self.kind = kind
+        self.share = min(1, max(0, share))
+    }
+}
+
+/// Ein abgeschlossener Eintrag – nur noch für die Lagerdauer gebraucht.
 struct ClosedItemSnapshot: Equatable, Sendable {
     var category: FoodCategory
     var frozenAt: Date
     var closedAt: Date
-    var closeReason: ConsumptionKind
-    var initialQuantity: Double
-    var unit: StorageUnit
-    var discardedQuantity: Double
-
-    init(
-        category: FoodCategory,
-        frozenAt: Date,
-        closedAt: Date,
-        closeReason: ConsumptionKind,
-        initialQuantity: Double = 0,
-        unit: StorageUnit = .piece,
-        discardedQuantity: Double = 0
-    ) {
-        self.category = category
-        self.frozenAt = frozenAt
-        self.closedAt = closedAt
-        self.closeReason = closeReason
-        self.initialQuantity = initialQuantity
-        self.unit = unit
-        self.discardedQuantity = discardedQuantity
-    }
 }
 
 struct CategoryStatistics: Identifiable, Equatable, Sendable {
     var category: FoodCategory
-    var closedCount: Int
+    var consumedCount: Int
     var discardedCount: Int
+    var consumedShare: Double
+    var discardedShare: Double
     var averageStorageDays: Int?
 
     var id: String { category.rawValue }
 
-    /// Anteil weggeworfener Eintraege, 0…1.
+    var eventCount: Int { consumedCount + discardedCount }
+    var totalShare: Double { consumedShare + discardedShare }
+
+    /// Anteil der weggeworfenen Menge an der gesamten entnommenen Menge, 0…1.
     var discardRate: Double {
-        closedCount > 0 ? Double(discardedCount) / Double(closedCount) : 0
+        totalShare > 0.0001 ? discardedShare / totalShare : 0
     }
 }
 
 struct InventoryStatistics: Equatable, Sendable {
-    var closedCount: Int
+    var consumedCount: Int
     var discardedCount: Int
+    var consumedShare: Double
+    var discardedShare: Double
+    var closedCount: Int
     var averageStorageDays: Int?
     var perCategory: [CategoryStatistics]
 
+    var eventCount: Int { consumedCount + discardedCount }
+    var totalShare: Double { consumedShare + discardedShare }
+
     var discardRate: Double {
-        closedCount > 0 ? Double(discardedCount) / Double(closedCount) : 0
+        totalShare > 0.0001 ? discardedShare / totalShare : 0
     }
 
     static let empty = InventoryStatistics(
-        closedCount: 0, discardedCount: 0, averageStorageDays: nil, perCategory: []
+        consumedCount: 0,
+        discardedCount: 0,
+        consumedShare: 0,
+        discardedShare: 0,
+        closedCount: 0,
+        averageStorageDays: nil,
+        perCategory: []
     )
 }
 
-/// Wertet abgeschlossene Eintraege aus: wie lange lagert ihr was, und wo geht am
-/// meisten verloren. Die Zahlen sind die Grundlage, um die Haltbarkeits-Richtwerte
-/// spaeter gezielt zu justieren.
+/// Wertet aus, was den Tiefkühler verlassen hat: wie viel gegessen, wie viel
+/// weggeworfen, und wo am meisten verloren geht.
 enum StatisticsBuilder {
-    static func build(from snapshots: [ClosedItemSnapshot], calendar: Calendar = .current) -> InventoryStatistics {
-        guard !snapshots.isEmpty else { return .empty }
+    /// Welchen Anteil des Eintrags macht eine Entnahme aus?
+    ///
+    /// Die Menge hat Vorrang, weil sie feiner auflöst. Nur wenn am Eintrag gar keine
+    /// Menge steht, zählen die Portionen.
+    static func share(
+        quantityTaken: Double,
+        initialQuantity: Double,
+        portionsTaken: Int,
+        initialPortions: Int
+    ) -> Double {
+        if initialQuantity > QuantityMath.epsilon {
+            return min(1, max(0, quantityTaken / initialQuantity))
+        }
+        if initialPortions > 0 {
+            return min(1, max(0, Double(portionsTaken) / Double(initialPortions)))
+        }
+        return 0
+    }
 
-        let grouped = Dictionary(grouping: snapshots, by: \.category)
-        let perCategory = grouped
-            .map { category, items in
-                CategoryStatistics(
+    static func build(
+        events: [ConsumptionSnapshot],
+        closedItems: [ClosedItemSnapshot],
+        calendar: Calendar = .current
+    ) -> InventoryStatistics {
+        guard !events.isEmpty || !closedItems.isEmpty else { return .empty }
+
+        let categories = Set(events.map(\.category)).union(closedItems.map(\.category))
+        let eventsByCategory = Dictionary(grouping: events, by: \.category)
+        let closedByCategory = Dictionary(grouping: closedItems, by: \.category)
+
+        let perCategory = categories
+            .map { category -> CategoryStatistics in
+                let categoryEvents = eventsByCategory[category] ?? []
+                let consumed = categoryEvents.filter { $0.kind == .consumed }
+                let discarded = categoryEvents.filter { $0.kind == .discarded }
+                return CategoryStatistics(
                     category: category,
-                    closedCount: items.count,
-                    discardedCount: items.filter { $0.closeReason == .discarded }.count,
-                    averageStorageDays: averageStorageDays(items, calendar: calendar)
+                    consumedCount: consumed.count,
+                    discardedCount: discarded.count,
+                    consumedShare: consumed.reduce(0) { $0 + $1.share },
+                    discardedShare: discarded.reduce(0) { $0 + $1.share },
+                    averageStorageDays: averageStorageDays(closedByCategory[category] ?? [], calendar: calendar)
                 )
             }
             .sorted { lhs, rhs in
-                if lhs.discardedCount != rhs.discardedCount { return lhs.discardedCount > rhs.discardedCount }
+                // Wo am meisten verloren geht, steht oben – das ist die Zahl,
+                // aus der sich etwas ableiten laesst.
+                if lhs.discardedShare != rhs.discardedShare { return lhs.discardedShare > rhs.discardedShare }
+                if lhs.totalShare != rhs.totalShare { return lhs.totalShare > rhs.totalShare }
                 return lhs.category.displayName < rhs.category.displayName
             }
 
+        let consumed = events.filter { $0.kind == .consumed }
+        let discarded = events.filter { $0.kind == .discarded }
+
         return InventoryStatistics(
-            closedCount: snapshots.count,
-            discardedCount: snapshots.filter { $0.closeReason == .discarded }.count,
-            averageStorageDays: averageStorageDays(snapshots, calendar: calendar),
+            consumedCount: consumed.count,
+            discardedCount: discarded.count,
+            consumedShare: consumed.reduce(0) { $0 + $1.share },
+            discardedShare: discarded.reduce(0) { $0 + $1.share },
+            closedCount: closedItems.count,
+            averageStorageDays: averageStorageDays(closedItems, calendar: calendar),
             perCategory: perCategory
         )
     }

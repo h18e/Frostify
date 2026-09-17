@@ -50,10 +50,14 @@ struct InventoryListView: View {
             Group {
                 if activeItems.isEmpty {
                     EmptyStateView(
+                        symbol: "snowflake",
                         title: "Tiefkühler ist leer",
                         message: "Erfasse dein erstes Produkt über das Plus oben rechts.",
-                        symbolName: "snowflake"
+                        actionTitle: "Produkt erfassen",
+                        action: { editorTarget = .create(ItemDraft.new(table: table)) }
                     )
+                    .frame(maxHeight: .infinity)
+                    .screenBackground()
                 } else {
                     list
                 }
@@ -96,7 +100,22 @@ struct InventoryListView: View {
         List {
             Section {
                 ExpirySummaryCard(counts: stateCounts, activeFilter: $activeFilter)
+                    .listRowInsets(EdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 0))
+                    .listRowBackground(Color.clear)
                     .listRowSeparator(.hidden)
+
+                // Die Gruppierung steht bewusst sichtbar hier und nicht im Menü:
+                // "Was habe ich eigentlich alles da" ist ein haeufiger Blick, der
+                // keinen Umweg ueber ein Untermenue verdient.
+                Picker("Gruppieren", selection: groupingBinding) {
+                    ForEach(InventoryGrouping.allCases) { grouping in
+                        Text(grouping.displayName).tag(grouping)
+                    }
+                }
+                .pickerStyle(.segmented)
+                .listRowInsets(EdgeInsets(top: 4, leading: 0, bottom: 8, trailing: 0))
+                .listRowBackground(Color.clear)
+                .listRowSeparator(.hidden)
             }
 
             if filteredItems.isEmpty {
@@ -104,25 +123,28 @@ struct InventoryListView: View {
                     Text(activeFilter == nil
                          ? "Keine Treffer für „\(searchText)“."
                          : "Keine Produkte in dieser Ampelstufe.")
-                        .foregroundStyle(.secondary)
+                        .font(.subheadline)
+                        .foregroundStyle(Theme.textSecondary)
+                        .listRowBackground(Theme.surface)
                 }
             }
 
             ForEach(sections) { section in
-                Section(section.title) {
+                Section {
                     ForEach(section.items, id: \.objectID) { item in
                         NavigationLink {
                             ItemDetailView(item: item)
                         } label: {
                             ItemRowView(item: item, table: table)
                         }
+                        .listRowBackground(Theme.surface)
                         .swipeActions(edge: .leading, allowsFullSwipe: true) {
                             Button {
                                 consumeTarget = ConsumeTarget(item: item)
                             } label: {
                                 Label("Entnehmen", systemImage: "minus.circle")
                             }
-                            .tint(.accentColor)
+                            .tint(Theme.accent)
                         }
                         .swipeActions(edge: .trailing) {
                             Button(role: .destructive) {
@@ -135,24 +157,32 @@ struct InventoryListView: View {
                             } label: {
                                 Label("Bearbeiten", systemImage: "pencil")
                             }
-                            .tint(.indigo)
+                            .tint(Theme.surfaceElevated)
                         }
+                    }
+                } header: {
+                    HStack(alignment: .firstTextBaseline) {
+                        Text(section.title)
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundStyle(Theme.textSecondary)
+                            .textCase(nil)
+                        Spacer(minLength: 8)
+                        Text(section.subtitle)
+                            .font(.caption)
+                            .foregroundStyle(Theme.textTertiary)
+                            .textCase(nil)
                     }
                 }
             }
         }
         .listStyle(.insetGrouped)
+        .themedList()
     }
 
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
             Menu {
-                Picker("Gruppieren nach", selection: groupingBinding) {
-                    ForEach(InventoryGrouping.allCases) { grouping in
-                        Text(grouping.displayName).tag(grouping)
-                    }
-                }
                 Picker("Sortieren nach", selection: sortingBinding) {
                     ForEach(InventorySorting.allCases) { sorting in
                         Text(sorting.displayName).tag(sorting)
@@ -164,7 +194,7 @@ struct InventoryListView: View {
                     }
                 }
             } label: {
-                Label("Ansicht", systemImage: "line.3.horizontal.decrease.circle")
+                Label("Sortierung", systemImage: "arrow.up.arrow.down")
             }
         }
 
@@ -215,4 +245,5 @@ struct ConsumeTarget: Identifiable {
     InventoryListView()
         .environment(\.managedObjectContext, PersistenceController.preview.viewContext)
         .environmentObject(AppPreferences.shared)
+        .preferredColorScheme(.dark)
 }

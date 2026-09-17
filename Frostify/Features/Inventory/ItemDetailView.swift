@@ -25,6 +25,9 @@ struct ItemDetailView: View {
                 archiveSection
             }
         }
+        .listStyle(.insetGrouped)
+        .listRowBackground(Theme.surface)
+        .themedList()
         .navigationTitle(item.displayName)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -124,7 +127,7 @@ struct ItemDetailView: View {
                         }
                     } icon: {
                         Image(systemName: event.kind.symbolName)
-                            .foregroundStyle(event.kind == .discarded ? .red : .secondary)
+                            .foregroundStyle(event.kind == .discarded ? Theme.stateExpired : Theme.textSecondary)
                     }
                     Spacer()
                     if !event.byNameText.isEmpty {

@@ -62,6 +62,8 @@ struct SettingsView: View {
                 developmentSection
                 #endif
             }
+            .listRowBackground(Theme.surface)
+            .themedList()
             .navigationTitle("Einstellungen")
             .task { displayName = preferences.displayName }
             .onDisappear { preferences.displayName = displayName }

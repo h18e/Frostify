@@ -39,6 +39,8 @@ struct ShelfLifeSettingsView: View {
                 }
             }
         }
+        .listRowBackground(Theme.surface)
+        .themedList()
         .navigationTitle("Haltbarkeit")
         .navigationBarTitleDisplayMode(.inline)
         .task { table = inventory.shelfLifeTable }

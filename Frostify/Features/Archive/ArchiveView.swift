@@ -40,10 +40,12 @@ struct ArchiveView: View {
             Group {
                 if closedItems.isEmpty {
                     EmptyStateView(
+                        symbol: "archivebox",
                         title: "Archiv ist leer",
-                        message: "Sobald du etwas ganz entnimmst oder wegwirfst, erscheint es hier.",
-                        symbolName: "archivebox"
+                        message: "Sobald du etwas ganz entnimmst oder wegwirfst, erscheint es hier."
                     )
+                    .frame(maxHeight: .infinity)
+                    .screenBackground()
                 } else {
                     list
                 }
@@ -53,7 +55,7 @@ struct ArchiveView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     NavigationLink {
-                        StatisticsView(items: Array(closedItems))
+                        StatisticsView()
                     } label: {
                         Label("Statistik", systemImage: "chart.bar")
                     }
@@ -78,15 +80,18 @@ struct ArchiveView: View {
                     }
                 }
             }
+            .listRowBackground(Theme.surface)
 
             if filtered.isEmpty {
                 Section {
                     Text("Keine Einträge in dieser Auswahl.")
-                        .foregroundStyle(.secondary)
+                        .font(.subheadline)
+                        .foregroundStyle(Theme.textSecondary)
                 }
+                .listRowBackground(Theme.surface)
             }
 
-            Section("\(filtered.count) Einträge") {
+            Section {
                 ForEach(filtered, id: \.objectID) { item in
                     NavigationLink {
                         ItemDetailView(item: item)
@@ -94,8 +99,16 @@ struct ArchiveView: View {
                         ArchiveRow(item: item)
                     }
                 }
+            } header: {
+                Text(filtered.count == 1 ? "1 Eintrag" : "\(filtered.count) Einträge")
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(Theme.textSecondary)
+                    .textCase(nil)
             }
+            .listRowBackground(Theme.surface)
         }
+        .listStyle(.insetGrouped)
+        .themedList()
     }
 }
 
@@ -104,27 +117,44 @@ private struct ArchiveRow: View {
 
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
-            Image(systemName: item.closeReason?.symbolName ?? "checkmark.circle")
-                .foregroundStyle(item.closeReason == .discarded ? .red : .green)
-                .frame(width: 24)
-                .accessibilityHidden(true)
+            CategoryIcon(category: item.category, size: 30)
 
-            VStack(alignment: .leading, spacing: 2) {
+            VStack(alignment: .leading, spacing: 3) {
                 Text(item.displayName)
-                    .fontWeight(.medium)
+                    .font(.subheadline.weight(.medium))
+                    .foregroundStyle(Theme.textPrimary)
                 Text(item.category.displayName)
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Theme.textSecondary)
                 HStack(spacing: 6) {
                     Text(item.closedAt ?? Date(), style: .date)
                     Text("·")
                     Text("\(StatisticsBuilder.storageDays(from: item.frozenDate, to: item.closedAt ?? Date())) Tage gelagert")
                 }
-                .font(.caption)
-                .foregroundStyle(.secondary)
+                .font(.caption2)
+                .foregroundStyle(Theme.textTertiary)
+
+                HStack(spacing: 6) {
+                    BadgeView(
+                        text: item.closeReason?.displayName ?? "Abgeschlossen",
+                        color: item.closeReason == .discarded ? Theme.stateExpired : Theme.stateFine,
+                        systemImage: item.closeReason?.symbolName
+                    )
+                    // Ein Eintrag kann beides sein: teilweise gegessen, Rest entsorgt.
+                    // Das steht hier, damit die Plakette oben nicht die halbe Wahrheit erzaehlt.
+                    if isMixed {
+                        BadgeView(text: "teilweise gegessen", color: Theme.textSecondary)
+                    }
+                }
+                .padding(.top, 1)
             }
         }
         .accessibilityElement(children: .combine)
+    }
+
+    private var isMixed: Bool {
+        let kinds = Set(item.eventList.map(\.kind))
+        return kinds.count > 1
     }
 }
 

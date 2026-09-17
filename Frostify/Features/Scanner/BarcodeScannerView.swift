@@ -67,6 +67,8 @@ struct BarcodeScannerView: View {
                 Text("Der Simulator hat keine Kamera – hier kannst du einen Code trotzdem eintippen und den Katalog testen.")
             }
         }
+        .listRowBackground(Theme.surface)
+        .themedList()
     }
 
     private var fallbackMessage: String {

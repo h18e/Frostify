@@ -11,9 +11,10 @@ struct ExpirySummaryCard: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading, spacing: 12) {
             Text(headline)
                 .font(.headline)
+                .foregroundStyle(Theme.textPrimary)
 
             HStack(spacing: 8) {
                 ForEach(ExpiryState.allCases.sorted(), id: \.rawValue) { state in
@@ -22,16 +23,17 @@ struct ExpirySummaryCard: View {
                         Button {
                             activeFilter = (activeFilter == state) ? nil : state
                         } label: {
-                            HStack(spacing: 4) {
+                            HStack(spacing: 5) {
                                 Image(systemName: state.symbolName)
+                                    .font(.caption2.weight(.bold))
                                 Text("\(count)")
-                                    .fontWeight(.semibold)
+                                    .font(.subheadline.weight(.semibold))
+                                    .monospacedDigit()
                             }
-                            .font(.subheadline)
                             .padding(.horizontal, 10)
                             .padding(.vertical, 6)
                             .background(
-                                state.color.opacity(activeFilter == state ? 0.30 : 0.15),
+                                state.color.opacity(activeFilter == state ? 0.32 : 0.16),
                                 in: Capsule()
                             )
                             .foregroundStyle(state.color)
@@ -47,8 +49,7 @@ struct ExpirySummaryCard: View {
                 }
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.vertical, 4)
+        .card()
     }
 
     private var headline: String {
@@ -77,4 +78,7 @@ struct ExpirySummaryCard: View {
         activeFilter: .constant(nil)
     )
     .padding()
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
+    .screenBackground()
+    .preferredColorScheme(.dark)
 }

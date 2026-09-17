@@ -59,16 +59,20 @@ private struct StoreErrorView: View {
     let error: Error
 
     var body: some View {
-        ContentUnavailableView {
-            Label("Daten nicht verfügbar", systemImage: "externaldrive.badge.xmark")
-        } description: {
-            VStack(spacing: 12) {
-                Text("Die lokale Datenbank konnte nicht geöffnet werden.")
-                Text(error.localizedDescription)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
+        VStack(spacing: 8) {
+            EmptyStateView(
+                symbol: "externaldrive.badge.xmark",
+                title: "Daten nicht verfügbar",
+                message: "Die lokale Datenbank konnte nicht geöffnet werden."
+            )
+            Text(error.localizedDescription)
+                .font(.caption)
+                .multilineTextAlignment(.center)
+                .foregroundStyle(Theme.textTertiary)
+                .padding(.horizontal, 28)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .screenBackground()
     }
 }
 
@@ -76,4 +80,5 @@ private struct StoreErrorView: View {
     RootView(loadError: nil)
         .environment(\.managedObjectContext, PersistenceController.preview.viewContext)
         .environmentObject(AppPreferences.shared)
+        .preferredColorScheme(.dark)
 }
