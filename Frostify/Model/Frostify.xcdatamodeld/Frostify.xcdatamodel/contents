@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23504" systemVersion="25A000" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+    <entity name="CatalogProduct" representedClassName="CatalogProduct" syncable="YES">
+        <attribute name="barcode" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="categoryRaw" optional="YES" attributeType="String" defaultValueString="other"/>
+        <attribute name="defaultNote" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="defaultPortions" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="defaultQuantity" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="defaultUnitRaw" optional="YES" attributeType="String" defaultValueString="piece"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="lastUsedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="name" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="useCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="freezer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Freezer" inverseName="catalogEntries" inverseEntity="Freezer"/>
+    </entity>
+    <entity name="ConsumptionEvent" representedClassName="ConsumptionEvent" syncable="YES">
+        <attribute name="byName" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="kindRaw" optional="YES" attributeType="String" defaultValueString="consumed"/>
+        <attribute name="portionsTaken" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="quantityTaken" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="item" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Item" inverseName="events" inverseEntity="Item"/>
+    </entity>
+    <entity name="Freezer" representedClassName="Freezer" syncable="YES">
+        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="name" optional="YES" attributeType="String" defaultValueString=""/>
+        <relationship name="catalogEntries" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CatalogProduct" inverseName="freezer" inverseEntity="CatalogProduct"/>
+        <relationship name="items" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Item" inverseName="freezer" inverseEntity="Item"/>
+        <relationship name="settings" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="FreezerSettings" inverseName="freezer" inverseEntity="FreezerSettings"/>
+    </entity>
+    <entity name="FreezerSettings" representedClassName="FreezerSettings" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="shelfLifeOverridesJSON" optional="YES" attributeType="String" defaultValueString=""/>
+        <relationship name="freezer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Freezer" inverseName="settings" inverseEntity="Freezer"/>
+    </entity>
+    <entity name="Item" representedClassName="Item" syncable="YES">
+        <attribute name="barcode" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="bestBefore" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="bestBeforeIsManual" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="categoryRaw" optional="YES" attributeType="String" defaultValueString="other"/>
+        <attribute name="closedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="closeReasonRaw" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="createdByName" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="frozenAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="initialPortions" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="initialQuantity" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="note" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="storageLocation" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="unitRaw" optional="YES" attributeType="String" defaultValueString="piece"/>
+        <attribute name="updatedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="events" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ConsumptionEvent" inverseName="item" inverseEntity="ConsumptionEvent"/>
+        <relationship name="freezer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Freezer" inverseName="items" inverseEntity="Freezer"/>
+    </entity>
+</model>

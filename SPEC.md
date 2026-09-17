@@ -1,6 +1,6 @@
 # Frostify – Spezifikation (Phase 1)
 
-**Stand:** 2026-09-17 · **Status:** vollständig geklärt, wartet auf Freigabe · **Autor:** Claude Code für Raphi
+**Stand:** 2026-09-17 · **Status:** freigegeben und umgesetzt (siehe README.md, SETUP.md) · **Autor:** Claude Code für Raphi
 
 Native iOS-App zur Verwaltung des Tiefkühler-Inhalts. Ziel: nichts geht vergessen,
 nichts landet abgelaufen im Abfall. Die Daten werden mit Raphis Partnerin geteilt.
