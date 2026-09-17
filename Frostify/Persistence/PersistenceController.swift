@@ -19,6 +19,28 @@ final class PersistenceController {
 
     private static let logger = Logger(subsystem: "ch.hebera.frostify", category: "Persistence")
 
+    /// Das Datenmodell wird genau **einmal** geladen und von allen Containern geteilt.
+    ///
+    /// `NSPersistentCloudKitContainer(name:)` laedt sonst fuer jeden Container eine
+    /// eigene Kopie des Modells. Es gibt dann zwei `NSEntityDescription`-Objekte, die
+    /// beide "Freezer" heissen, und Core Data kann der Klasse `Freezer` keine
+    /// eindeutige Entitaet mehr zuordnen. Die Folge ist die auf den ersten Blick
+    /// unsinnige Meldung "Unacceptable type of value for to-one relationship:
+    /// desired type = Freezer; given type = Freezer" – gleicher Name, verschiedene
+    /// Objekte. Mit einem geteilten Modell kann das nicht mehr passieren, egal wie
+    /// viele Container es gibt (App-Stack, Vorschau-Stack, Tests).
+    private static let managedObjectModel: NSManagedObjectModel = {
+        if let url = Bundle.main.url(forResource: "Frostify", withExtension: "momd"),
+           let model = NSManagedObjectModel(contentsOf: url) {
+            return model
+        }
+        if let model = NSManagedObjectModel.mergedModel(from: [Bundle.main]) {
+            logger.warning("Modell ueber mergedModel geladen – 'Frostify.momd' wurde nicht gefunden.")
+            return model
+        }
+        fatalError("Frostify: Das Core-Data-Modell 'Frostify.momd' liegt nicht im App-Bundle.")
+    }()
+
     let container: NSPersistentCloudKitContainer
     private(set) var privateStore: NSPersistentStore?
     private(set) var sharedStore: NSPersistentStore?
@@ -30,7 +52,10 @@ final class PersistenceController {
     var viewContext: NSManagedObjectContext { container.viewContext }
 
     init(inMemory: Bool = false) {
-        container = NSPersistentCloudKitContainer(name: "Frostify")
+        container = NSPersistentCloudKitContainer(
+            name: "Frostify",
+            managedObjectModel: Self.managedObjectModel
+        )
 
         guard let privateDescription = container.persistentStoreDescriptions.first else {
             fatalError("Frostify: Der Core-Data-Stack hat keine Store-Beschreibung – das Modell fehlt.")
