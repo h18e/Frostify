@@ -261,6 +261,41 @@ cd ~/Developer/Frostify
 git pull
 ```
 
-Falls `git pull` einmal meldet, lokale Änderungen würden überschrieben, sag mir
-Bescheid statt selbst etwas zu löschen. Meistens steckt eine Datei dahinter, die gar
-nicht ins Git gehört – das behebt man an der Ursache, nicht bei jedem Auftreten neu.
+### Wenn `git pull` meldet, lokale Änderungen würden überschrieben
+
+Das betrifft praktisch immer `Frostify.xcodeproj/project.pbxproj`. Ursache: Xcode
+schreibt diese Datei beim Öffnen in seiner eigenen Formatierung neu. Für Git sieht
+das aus wie eine echte Änderung, obwohl inhaltlich nichts anderes drinsteht.
+
+**Erster Schritt – immer:** Änderung sichern und anschauen, statt blind zu verwerfen.
+
+```bash
+cd ~/Developer/Frostify
+git diff Frostify.xcodeproj/project.pbxproj > ~/Desktop/frostify-local.diff
+cat ~/Desktop/frostify-local.diff
+```
+
+Schick mir die Ausgabe. Wenn es reine Umformatierung ist, kannst du sie gefahrlos
+verwerfen – gesichert ist sie ja:
+
+```bash
+git checkout -- Frostify.xcodeproj/project.pbxproj
+git pull
+```
+
+**Wenn es sich wiederholt:** Dann weicht die Fassung im Git noch von der ab, die
+dein Xcode schreibt. In dem Fall committest du Xcodes Fassung einmalig selbst –
+danach ist Ruhe, weil Xcode dann nichts mehr zu ändern findet:
+
+```bash
+cd ~/Developer/Frostify
+git add Frostify.xcodeproj/project.pbxproj
+git commit -m "Projektdatei in Xcodes Formatierung"
+git push
+```
+
+Sag mir Bescheid, wenn du das gemacht hast – dann setze ich darauf auf.
+
+Ein Hinweis zur Beruhigung: Deine Team-ID landet dabei **nicht** im Git. Sie steht
+in `Config/Signing.local.xcconfig`, die von `.gitignore` ausgenommen ist; in der
+Projektdatei steht nur die Variable `$(FROSTIFY_DEVELOPMENT_TEAM)`.
