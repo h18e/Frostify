@@ -41,14 +41,14 @@ struct ItemEditorView: View {
             }
             .listRowBackground(Theme.surface)
             .themedList()
-            .navigationTitle(isEditing ? "Eintrag bearbeiten" : "Neuer Eintrag")
+            .navigationTitle(isEditing ? "Iitrag bearbeite" : "Nöie Iitrag")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Abbrechen") { dismiss() }
+                    Button("Abbräche") { dismiss() }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Sichern") { save() }
+                    Button("Sichere") { save() }
                         .disabled(!draft.isValid)
                 }
             }
@@ -86,7 +86,7 @@ struct ItemEditorView: View {
                 draft.recalculateBestBefore(using: table)
             }
 
-            TextField("Bemerkung", text: $draft.note, axis: .vertical)
+            TextField("Bemerkig", text: $draft.note, axis: .vertical)
                 .lineLimit(1...4)
         }
     }
@@ -94,7 +94,7 @@ struct ItemEditorView: View {
     private var quantitySection: some View {
         Section {
             HStack {
-                Text("Menge")
+                Text("Mängi")
                 Spacer()
                 TextField("0", value: $draft.quantity, format: .number)
                     .keyboardType(.decimalPad)
@@ -111,30 +111,30 @@ struct ItemEditorView: View {
 
             Stepper(value: $draft.portions, in: 0...99) {
                 HStack {
-                    Text("Portionen")
+                    Text("Portione")
                     Spacer()
-                    Text(draft.portions == 0 ? "keine Angabe" : "\(draft.portions)")
+                    Text(draft.portions == 0 ? "kei Angab" : "\(draft.portions)")
                         .foregroundStyle(.secondary)
                 }
             }
         } header: {
-            Text("Menge")
+            Text("Mängi")
         } footer: {
-            Text("Beispiel: 400 g Rindsteak, 2 Portionen, Bemerkung „2 Steaks im Beutel“. Beim Entnehmen rechnet die App zwischen Menge und Portionen um.")
+            Text("Bispiu: 400 g Rindsteak, 2 Portione, Bemerkig „2 Steaks im Sack“. Bim Usenäh rächnet d App zwüsche Mängi u Portione um.")
         }
     }
 
     private var dateSection: some View {
         Section {
-            DatePicker("Eingefroren am", selection: $draft.frozenAt, displayedComponents: .date)
+            DatePicker("Igfrore am", selection: $draft.frozenAt, displayedComponents: .date)
                 .onChange(of: draft.frozenAt) { _, _ in
                     draft.recalculateBestBefore(using: table)
                 }
 
-            DatePicker("Empfohlen bis", selection: bestBeforeBinding, displayedComponents: .date)
+            DatePicker("Empfohle bis", selection: bestBeforeBinding, displayedComponents: .date)
 
             if draft.bestBeforeIsManual {
-                Button("Auf Richtwert zurücksetzen", systemImage: "arrow.uturn.backward") {
+                Button("Uf Richtwärt zrügsetze", systemImage: "arrow.uturn.backward") {
                     draft.bestBeforeIsManual = false
                     draft.recalculateBestBefore(using: table)
                 }
@@ -144,8 +144,8 @@ struct ItemEditorView: View {
             Text("Haltbarkeit")
         } footer: {
             Text(draft.bestBeforeIsManual
-                 ? "Von Hand gesetzt – der Richtwert der Kategorie wird nicht mehr angewendet."
-                 : "Richtwert für \(draft.category.displayName): \(table.months(for: draft.category)) Monate.")
+                 ? "Vo Hand gsetzt – dr Richtwärt vo dr Kategorie wird nüm aagwändet."
+                 : "Richtwärt für \(draft.category.displayName): \(table.months(for: draft.category)) Mönet.")
         }
     }
 
@@ -172,7 +172,7 @@ struct ItemEditorView: View {
         } header: {
             Text("Lagerort")
         } footer: {
-            Text("Hilft beim Finden, ohne den ganzen Tiefkühler auszuräumen.")
+            Text("Hauft bim Finde, ohni dr ganz Tiefchüeler uszrume.")
         }
     }
 
@@ -182,7 +182,7 @@ struct ItemEditorView: View {
                 Label(barcode, systemImage: "barcode")
                     .font(.footnote.monospaced())
                 Spacer()
-                Button("Entfernen", role: .destructive) {
+                Button("Wägnäh", role: .destructive) {
                     draft.barcode = nil
                 }
                 .font(.footnote)
@@ -190,7 +190,7 @@ struct ItemEditorView: View {
         } header: {
             Text("Barcode")
         } footer: {
-            Text("Beim Sichern merkt sich Frostify Name, Kategorie, Einheit und Menge zu diesem Code. Beim nächsten Scan ist alles vorausgefüllt.")
+            Text("Bim Sichere merkt sech Frostify Name, Kategorie, Einheit u Mängi zu däm Code. Bim nächschte Scan isch aues scho usgfüut.")
         }
     }
 
@@ -220,7 +220,7 @@ struct ItemEditorView: View {
     }
 }
 
-#Preview("Erfassen") {
+#Preview("Erfasse") {
     ItemEditorView(target: .create(ItemDraft.new(category: .meat)))
         .environment(\.managedObjectContext, PersistenceController.preview.viewContext)
 }

@@ -11,32 +11,32 @@ struct SettingsView: View {
         NavigationStack {
             Form {
                 Section {
-                    TextField("Dein Name", text: $displayName)
+                    TextField("Dy Name", text: $displayName)
                         .onSubmit { preferences.displayName = displayName }
                 } header: {
                     Text("Name")
                 } footer: {
-                    Text("Wird an erfassten Einträgen und Entnahmen vermerkt, damit ihr seht, wer was gemacht hat.")
+                    Text("Wird a de erfasste Iiträg u Usenahme vermerkt, damit dir gseht, wär was gmacht het.")
                 }
 
-                Section("Gemeinsam") {
+                Section("Zäme") {
                     NavigationLink {
                         SharingView()
                     } label: {
-                        Label("Teilen", systemImage: "person.2")
+                        Label("Teile", systemImage: "person.2")
                     }
                     NavigationLink {
                         ShelfLifeSettingsView()
                     } label: {
-                        Label("Haltbarkeits-Richtwerte", systemImage: "calendar.badge.clock")
+                        Label("Haltbarkeits-Richtwärt", systemImage: "calendar.badge.clock")
                     }
                 }
 
-                Section("Dieses Gerät") {
+                Section("Ds Grät") {
                     NavigationLink {
                         ReminderSettingsView()
                     } label: {
-                        Label("Erinnerungen", systemImage: "bell")
+                        Label("Erinnerige", systemImage: "bell")
                     }
 
                     Picker(selection: groupingBinding) {
@@ -44,7 +44,7 @@ struct SettingsView: View {
                             Text(grouping.displayName).tag(grouping)
                         }
                     } label: {
-                        Label("Gruppierung", systemImage: "rectangle.3.group")
+                        Label("Gruppierig", systemImage: "rectangle.3.group")
                     }
 
                     Picker(selection: sortingBinding) {
@@ -52,7 +52,7 @@ struct SettingsView: View {
                             Text(sorting.displayName).tag(sorting)
                         }
                     } label: {
-                        Label("Sortierung", systemImage: "arrow.up.arrow.down")
+                        Label("Sortierig", systemImage: "arrow.up.arrow.down")
                     }
                 }
 
@@ -64,7 +64,7 @@ struct SettingsView: View {
             }
             .listRowBackground(Theme.surface)
             .themedList()
-            .navigationTitle("Einstellungen")
+            .navigationTitle("Istellige")
             .task { displayName = preferences.displayName }
             .onDisappear { preferences.displayName = displayName }
         }
@@ -73,7 +73,7 @@ struct SettingsView: View {
     private var aboutSection: some View {
         Section {
             LabeledContent("Version", value: Self.versionString)
-            Label("Deine Daten liegen in deinem privaten iCloud-Bereich. Frostify hat keinen eigenen Server.", systemImage: "lock")
+            Label("Dyni Date ligge i dym private iCloud-Bereich. Frostify het kei eigete Server.", systemImage: "lock")
                 .font(.footnote)
                 .foregroundStyle(.secondary)
         } header: {
@@ -120,7 +120,7 @@ struct SettingsView: View {
     }
 }
 
-#Preview("Einstellungen") {
+#Preview("Istellige") {
     SettingsView()
         .environmentObject(AppPreferences.shared)
         .environment(\.managedObjectContext, PersistenceController.preview.viewContext)

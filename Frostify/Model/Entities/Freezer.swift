@@ -26,7 +26,7 @@ extension Freezer {
 
     var displayName: String {
         let trimmed = (name ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
-        return trimmed.isEmpty ? "Tiefkühler" : trimmed
+        return trimmed.isEmpty ? "Tiefchüeler" : trimmed
     }
 
     var itemList: [Item] {

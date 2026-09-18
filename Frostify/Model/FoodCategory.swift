@@ -25,20 +25,20 @@ enum FoodCategory: String, CaseIterable, Identifiable, Sendable {
 
     var displayName: String {
         switch self {
-        case .meat: return "Fleisch (Stücke, Braten)"
-        case .mincedMeat: return "Hackfleisch & Wurstwaren"
-        case .poultry: return "Geflügel"
+        case .meat: return "Fleisch (Stück, Brate)"
+        case .mincedMeat: return "Ghackts & Wurschtware"
+        case .poultry: return "Gflügu"
         case .fattyFish: return "Fisch fett (Lachs, Thon)"
-        case .leanFish: return "Fisch mager & Meeresfrüchte"
-        case .vegetables: return "Gemüse"
-        case .fruit: return "Früchte & Beeren"
+        case .leanFish: return "Fisch mager & Meerfrücht"
+        case .vegetables: return "Gmües"
+        case .fruit: return "Frücht & Beeri"
         case .bread: return "Brot, Teig & Gebäck"
-        case .readyMeals: return "Fertiggerichte & Selbstgekochtes"
-        case .soups: return "Suppen, Saucen & Fonds"
-        case .herbs: return "Kräuter"
-        case .dairy: return "Butter & Rahm"
-        case .desserts: return "Desserts & Glace"
-        case .other: return "Sonstiges"
+        case .readyMeals: return "Fertiggricht & Sälbergchochts"
+        case .soups: return "Suppe, Sauce & Fond"
+        case .herbs: return "Chrüter"
+        case .dairy: return "Butter & Nidle"
+        case .desserts: return "Dessert & Glace"
+        case .other: return "Angers"
         }
     }
 

@@ -28,11 +28,11 @@ struct BarcodeScannerView: View {
                     fallback
                 }
             }
-            .navigationTitle("Barcode scannen")
+            .navigationTitle("Barcode scanne")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Abbrechen") { dismiss() }
+                    Button("Abbräche") { dismiss() }
                 }
             }
             .task { await resolveCameraAccess() }
@@ -40,7 +40,7 @@ struct BarcodeScannerView: View {
     }
 
     private var hint: some View {
-        Text("Code ins Bild halten – Frostify erkennt ihn automatisch.")
+        Text("Code is Bud haute – Frostify erkennt ne automatisch.")
             .font(.footnote)
             .padding(10)
             .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 10))
@@ -54,17 +54,17 @@ struct BarcodeScannerView: View {
                     .foregroundStyle(.secondary)
             }
             Section {
-                TextField("Code eingeben", text: $manualCode)
+                TextField("Code iigäh", text: $manualCode)
                     .keyboardType(.numberPad)
                     .font(.body.monospaced())
-                Button("Übernehmen") {
+                Button("Übernäh") {
                     handle(manualCode.trimmingCharacters(in: .whitespacesAndNewlines))
                 }
                 .disabled(manualCode.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
             } header: {
-                Text("Von Hand")
+                Text("Vo Hand")
             } footer: {
-                Text("Der Simulator hat keine Kamera – hier kannst du einen Code trotzdem eintippen und den Katalog testen.")
+                Text("Dr Simulator het kei Kamera – da chasch e Code trotzdäm iitippe u dr Katalog teschte.")
             }
         }
         .listRowBackground(Theme.surface)
@@ -73,12 +73,12 @@ struct BarcodeScannerView: View {
 
     private var fallbackMessage: String {
         if cameraAuthorized == false {
-            return "Frostify darf die Kamera nicht benutzen. Du kannst das in den iOS-Einstellungen unter Datenschutz → Kamera ändern."
+            return "Frostify darf d Kamera nid bruche. Das chasch i de iOS-Istellige under Dateschutz → Kamera ändere."
         }
         if !DataScannerViewController.isSupported {
-            return "Dieses Gerät unterstützt den Scanner nicht."
+            return "Ds Grät unterstützt dr Scanner nid."
         }
-        return "Der Scanner ist gerade nicht verfügbar."
+        return "Dr Scanner isch grad nid verfüegbar."
     }
 
     private func handle(_ code: String) {

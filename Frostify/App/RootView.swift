@@ -16,13 +16,13 @@ struct RootView: View {
         }
         .onReceive(NotificationCenter.default.publisher(for: .frostifyDidAcceptShare)) { notification in
             if let error = notification.userInfo?["error"] as? Error {
-                shareBanner = "Freigabe fehlgeschlagen: \(error.localizedDescription)"
+                shareBanner = "D Freigab het nid klappet: \(error.localizedDescription)"
             } else {
-                shareBanner = "Freigabe angenommen – der gemeinsame Bestand erscheint gleich."
+                shareBanner = "Freigab aagnoh – dr gmeinsam Vorrat erschint grad."
             }
         }
         .alert(
-            "Teilen",
+            "Teile",
             isPresented: Binding(
                 get: { shareBanner != nil },
                 set: { if !$0 { shareBanner = nil } }
@@ -37,13 +37,13 @@ struct RootView: View {
     private var tabs: some View {
         TabView {
             InventoryListView()
-                .tabItem { Label("Bestand", systemImage: "snowflake") }
+                .tabItem { Label("Vorrat", systemImage: "snowflake") }
 
             ArchiveView()
                 .tabItem { Label("Archiv", systemImage: "archivebox") }
 
             SettingsView()
-                .tabItem { Label("Einstellungen", systemImage: "gearshape") }
+                .tabItem { Label("Istellige", systemImage: "gearshape") }
         }
         .task {
             // Beim allerersten Start den Tiefkuehler anlegen, damit alle weiteren
@@ -62,8 +62,8 @@ private struct StoreErrorView: View {
         VStack(spacing: 8) {
             EmptyStateView(
                 symbol: "externaldrive.badge.xmark",
-                title: "Daten nicht verfügbar",
-                message: "Die lokale Datenbank konnte nicht geöffnet werden."
+                title: "Date nid verfüegbar",
+                message: "D lokali Datebank het sech nid la uftue."
             )
             Text(error.localizedDescription)
                 .font(.caption)

@@ -12,8 +12,8 @@ enum ConsumptionKind: String, CaseIterable, Identifiable, Sendable {
 
     var displayName: String {
         switch self {
-        case .consumed: return "Gegessen"
-        case .discarded: return "Weggeworfen"
+        case .consumed: return "Gässe"
+        case .discarded: return "Wäggschmisse"
         }
     }
 

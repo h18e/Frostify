@@ -45,8 +45,8 @@ struct ArchiveView: View {
                 if events.isEmpty {
                     EmptyStateView(
                         symbol: "archivebox",
-                        title: "Noch nichts entnommen",
-                        message: "Sobald du etwas aus dem Tiefkühler nimmst oder wegwirfst, erscheint es hier."
+                        title: "No nüt usegnoh",
+                        message: "Sobaud du öppis usem Tiefchüeler nimmsch oder wägschmeisst, erschint's da."
                     )
                     .frame(maxHeight: .infinity)
                     .screenBackground()
@@ -72,25 +72,25 @@ struct ArchiveView: View {
         List {
             Section {
                 Picker("Grund", selection: $kindFilter) {
-                    Text("Alle").tag(ConsumptionKind?.none)
-                    Text("Gegessen").tag(ConsumptionKind?.some(.consumed))
-                    Text("Weggeworfen").tag(ConsumptionKind?.some(.discarded))
+                    Text("Aui").tag(ConsumptionKind?.none)
+                    Text("Gässe").tag(ConsumptionKind?.some(.consumed))
+                    Text("Wäggschmisse").tag(ConsumptionKind?.some(.discarded))
                 }
                 .pickerStyle(.segmented)
 
-                Picker("Zeitraum", selection: $timeframe) {
+                Picker("Zitruum", selection: $timeframe) {
                     ForEach(ArchiveTimeframe.allCases) { frame in
                         Text(frame.displayName).tag(frame)
                     }
                 }
 
-                Toggle("Nur aufgebrauchte Produkte", isOn: $onlyClosed)
+                Toggle("Nume ufbruchti Produkt", isOn: $onlyClosed)
             }
             .listRowBackground(Theme.surface)
 
             if filtered.isEmpty {
                 Section {
-                    Text("Keine Entnahmen in dieser Auswahl.")
+                    Text("Kei Usenahme i dere Uswau.")
                         .font(.subheadline)
                         .foregroundStyle(Theme.textSecondary)
                 }
@@ -120,7 +120,7 @@ struct ArchiveView: View {
     }
 
     private var headerText: String {
-        filtered.count == 1 ? "1 Entnahme" : "\(filtered.count) Entnahmen"
+        filtered.count == 1 ? "1 Usenahm" : "\(filtered.count) Usenahme"
     }
 }
 
@@ -153,7 +153,7 @@ private struct ConsumptionRow: View {
                 HStack(spacing: 6) {
                     Text(event.eventDate, style: .date)
                     Text("·")
-                    Text("nach \(storageDays) Tagen")
+                    Text("nach \(storageDays) Täg")
                 }
                 .font(.caption2)
                 .foregroundStyle(Theme.textTertiary)
@@ -167,7 +167,7 @@ private struct ConsumptionRow: View {
                     // Das Produkt liegt noch im Tiefkuehler – hier steht nur dieser
                     // eine entnommene Anteil, nicht der ganze Eintrag.
                     if !item.isClosed {
-                        BadgeView(text: "noch im Bestand", color: Theme.textSecondary)
+                        BadgeView(text: "no im Vorrat", color: Theme.textSecondary)
                     }
                     if !event.byNameText.isEmpty {
                         Text(event.byNameText)
@@ -195,9 +195,9 @@ enum ArchiveTimeframe: String, CaseIterable, Identifiable {
 
     var displayName: String {
         switch self {
-        case .lastMonth: return "30 Tage"
-        case .lastYear: return "12 Monate"
-        case .all: return "Alles"
+        case .lastMonth: return "30 Täg"
+        case .lastYear: return "12 Mönet"
+        case .all: return "Aues"
         }
     }
 

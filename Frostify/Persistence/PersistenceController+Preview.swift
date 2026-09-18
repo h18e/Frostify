@@ -9,7 +9,7 @@ extension PersistenceController {
 
         let freezer = Freezer(context: context)
         freezer.id = UUID()
-        freezer.name = "Tiefkühler Küche"
+        freezer.name = "Tiefchüeler Chuchi"
         freezer.createdAt = Date()
 
         let settings = FreezerSettings(context: context)
@@ -49,13 +49,13 @@ extension PersistenceController {
         }
 
         _ = makeItem("Rindsteak", .meat, quantity: 400, unit: .gram, portions: 2,
-                     note: "2 Steaks im Beutel", daysAgo: 20, location: "Schublade 2")
-        _ = makeItem("Hackfleisch", .mincedMeat, quantity: 500, unit: .gram, portions: 0,
+                     note: "2 Steaks im Sack", daysAgo: 20, location: "Schublade 2")
+        _ = makeItem("Ghackts", .mincedMeat, quantity: 500, unit: .gram, portions: 0,
                      note: "", daysAgo: 85, location: "Schublade 1")
         _ = makeItem("Erbsen", .vegetables, quantity: 3, unit: .bag, portions: 0,
-                     note: "", daysAgo: 10, location: "Oberes Fach")
+                     note: "", daysAgo: 10, location: "Obers Fach")
         let lasagne = makeItem("Lasagne", .readyMeals, quantity: 1, unit: .package, portions: 4,
-                               note: "Selbstgemacht", daysAgo: 60, location: "Schublade 3")
+                               note: "Sälbergmacht", daysAgo: 60, location: "Schublade 3")
 
         let event = ConsumptionEvent(context: context)
         event.id = UUID()

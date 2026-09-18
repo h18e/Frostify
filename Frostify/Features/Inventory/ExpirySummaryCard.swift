@@ -44,7 +44,7 @@ struct ExpirySummaryCard: View {
                         }
                         .buttonStyle(.plain)
                         .accessibilityLabel("\(count) \(state.displayName)")
-                        .accessibilityHint(activeFilter == state ? "Filter aufheben" : "Nur diese anzeigen")
+                        .accessibilityHint(activeFilter == state ? "Filter ufhebe" : "Nume die zeige")
                     }
                 }
             }
@@ -56,19 +56,19 @@ struct ExpirySummaryCard: View {
         let expired = counts[.expired] ?? 0
         if expired > 0 {
             return expired == 1
-                ? "1 Produkt ist überschritten"
-                : "\(expired) Produkte sind überschritten"
+                ? "1 Produkt isch abglaufe"
+                : "\(expired) Produkt si abglaufe"
         }
         if urgentTotal > 0 {
             return urgentTotal == 1
-                ? "1 Produkt läuft diese Woche ab"
-                : "\(urgentTotal) Produkte laufen diese Woche ab"
+                ? "1 Produkt louft die Wuche ab"
+                : "\(urgentTotal) Produkt loufe die Wuche ab"
         }
         let soon = counts[.soon] ?? 0
         if soon > 0 {
-            return soon == 1 ? "1 Produkt läuft im nächsten Monat ab" : "\(soon) Produkte laufen im nächsten Monat ab"
+            return soon == 1 ? "1 Produkt louft im nächschte Monet ab" : "\(soon) Produkt loufe im nächschte Monet ab"
         }
-        return "Alles im grünen Bereich"
+        return "Aues im grüene Bereich"
     }
 }
 

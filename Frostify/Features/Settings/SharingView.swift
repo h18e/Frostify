@@ -30,7 +30,7 @@ struct SharingView: View {
         }
         .listRowBackground(Theme.surface)
         .themedList()
-        .navigationTitle("Teilen")
+        .navigationTitle("Teile")
         .navigationBarTitleDisplayMode(.inline)
         .task(id: reloadToken) {
             share = service.existingShare(for: freezer)
@@ -48,7 +48,7 @@ struct SharingView: View {
             }
         }
         .alert(
-            "Teilen nicht möglich",
+            "Teile nid möglech",
             isPresented: Binding(
                 get: { service.errorMessage != nil },
                 set: { if !$0 { service.errorMessage = nil } }
@@ -62,13 +62,13 @@ struct SharingView: View {
 
     private var statusSection: some View {
         Section {
-            LabeledContent("Tiefkühler", value: freezer.displayName)
+            LabeledContent("Tiefchüeler", value: freezer.displayName)
             LabeledContent("Status") {
                 if share == nil {
-                    Text(service.isOwner(of: freezer) ? "Nicht geteilt" : "Für dich freigegeben")
+                    Text(service.isOwner(of: freezer) ? "Nid teilt" : "Für di freiggä")
                         .foregroundStyle(.secondary)
                 } else {
-                    Label("Geteilt", systemImage: "person.2.fill")
+                    Label("Teilt", systemImage: "person.2.fill")
                         .foregroundStyle(.green)
                 }
             }
@@ -86,32 +86,32 @@ struct SharingView: View {
                 if service.isWorking {
                     HStack {
                         ProgressView()
-                        Text("Einladung wird vorbereitet …")
+                        Text("D Iiladig wird vorbereitet …")
                     }
                 } else {
                     Label(
-                        share == nil ? "Tiefkühler teilen" : "Einladung verwalten",
+                        share == nil ? "Tiefchüeler teile" : "D Iiladig verwaute",
                         systemImage: share == nil ? "person.badge.plus" : "person.2.badge.gearshape"
                     )
                 }
             }
             .disabled(service.isWorking)
         } footer: {
-            Text("Es öffnet sich Apples Dialog: dort wählst du, wie du den Link verschickst. Deine Partnerin tippt ihn an, iOS öffnet Frostify, und ab dann seht ihr beide denselben Bestand.")
+            Text("Es geit dr Dialog vo Apple uf: dert wählsch, wie du dr Link verschicksch. Dyni Partnerin tippt ne aa, iOS macht Frostify uf, u ab de gseht dir beidi dr glych Vorrat.")
         }
     }
 
     private var participantSection: some View {
         Section {
-            Text("Dieser Tiefkühler wurde dir freigegeben. Änderungen siehst du und die andere Person gleichermassen.")
+            Text("Dä Tiefchüeler isch dir freiggä worde. Änderige gseht dir beidi glych.")
                 .foregroundStyle(.secondary)
         } footer: {
-            Text("Die Freigabe beenden kannst du über den Einladungslink oder in den iCloud-Einstellungen unter „Geteilt mit dir“.")
+            Text("D Freigab beände chasch übere Iiladigs-Link oder i de iCloud-Istellige under „Mit dir geteilt“.")
         }
     }
 
     private func participantsListSection(_ share: CKShare) -> some View {
-        Section("Teilnehmer") {
+        Section("Teilnähmer") {
             ForEach(share.participants, id: \.userIdentity.userRecordID) { participant in
                 VStack(alignment: .leading, spacing: 2) {
                     Text(displayName(for: participant))
@@ -125,11 +125,11 @@ struct SharingView: View {
 
     private var explanationSection: some View {
         Section {
-            Label("Beide brauchen eine eigene Apple-ID und eine iCloud-Anmeldung.", systemImage: "person.2")
-            Label("Ohne Netz arbeitet Frostify normal weiter und gleicht später ab.", systemImage: "wifi.slash")
-            Label("Gleichzeitige Entnahmen gehen nicht verloren – sie werden zusammengezählt.", systemImage: "arrow.triangle.merge")
+            Label("Beidi bruuche ne eigeti Apple-ID u ne iCloud-Aamäudig.", systemImage: "person.2")
+            Label("Ohni Netz schaffet Frostify normau wyter u glycht speter ab.", systemImage: "wifi.slash")
+            Label("Glychzytigi Usenahme göh nid verlore – si wärde zämezeut.", systemImage: "arrow.triangle.merge")
         } header: {
-            Text("Gut zu wissen")
+            Text("Guet z wüsse")
         }
         .font(.footnote)
     }
@@ -145,27 +145,27 @@ struct SharingView: View {
         if let phone = participant.userIdentity.lookupInfo?.phoneNumber, !phone.isEmpty {
             return phone
         }
-        return participant.role == .owner ? "Besitzer" : "Eingeladene Person"
+        return participant.role == .owner ? "Bsitzer" : "Iiglade Person"
     }
 
     private func statusText(for participant: CKShare.Participant) -> String {
         let role: String
         switch participant.role {
-        case .owner: role = "Besitzer"
-        case .privateUser: role = "Eingeladen"
+        case .owner: role = "Bsitzer"
+        case .privateUser: role = "Iiglade"
         case .publicUser: role = "Über Link"
         default: role = "Unbekannt"
         }
 
         let status: String
         switch participant.acceptanceStatus {
-        case .accepted: status = "angenommen"
-        case .pending: status = "ausstehend"
+        case .accepted: status = "aagnoh"
+        case .pending: status = "pendänt"
         case .removed: status = "entfernt"
         default: status = "unbekannt"
         }
 
-        let permission = participant.permission == .readWrite ? "darf ändern" : "nur lesen"
+        let permission = participant.permission == .readWrite ? "darf ändere" : "nume läse"
         return "\(role) · \(status) · \(permission)"
     }
 }

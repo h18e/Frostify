@@ -56,7 +56,7 @@ struct StatisticsView: View {
         List {
             if stats.eventCount == 0 {
                 Section {
-                    Text("Noch keine Entnahmen – die Statistik füllt sich, sobald ihr etwas aus dem Tiefkühler nehmt.")
+                    Text("No kei Usenahme – d Statistik füut sech, sobaud dir öppis usem Tiefchüeler nämet.")
                         .font(.subheadline)
                         .foregroundStyle(Theme.textSecondary)
                 }
@@ -74,24 +74,24 @@ struct StatisticsView: View {
 
     private func overallSection(_ stats: InventoryStatistics) -> some View {
         Section {
-            LabeledValueRow(label: "Entnahmen") {
+            LabeledValueRow(label: "Usenahme") {
                 Text("\(stats.eventCount)")
                     .monospacedDigit()
                     .foregroundStyle(Theme.textPrimary)
             }
-            LabeledValueRow(label: "Davon gegessen") {
+            LabeledValueRow(label: "Dervo gässe") {
                 Text("\(stats.consumedCount)")
                     .monospacedDigit()
                     .foregroundStyle(Theme.stateFine)
             }
-            LabeledValueRow(label: "Davon weggeworfen") {
+            LabeledValueRow(label: "Dervo wäggschmisse") {
                 Text("\(stats.discardedCount)")
                     .monospacedDigit()
                     .foregroundStyle(Theme.stateExpired)
             }
             if let days = stats.averageStorageDays {
-                LabeledValueRow(label: "Ø Lagerdauer") {
-                    Text("\(days) Tage")
+                LabeledValueRow(label: "Ø Lagerdüür") {
+                    Text("\(days) Täg")
                         .monospacedDigit()
                         .foregroundStyle(Theme.textPrimary)
                 }
@@ -103,13 +103,13 @@ struct StatisticsView: View {
                 color: stats.discardRate > 0.2 ? Theme.stateExpired : Theme.stateFine,
                 fraction: stats.discardRate,
                 primaryText: percent(stats.discardRate),
-                secondaryText: "nach Menge gewichtet"
+                secondaryText: "nach Mängi gwichtet"
             )
             .padding(.vertical, 4)
         } header: {
-            sectionHeader("Gesamt")
+            sectionHeader("Total")
         } footer: {
-            Text("Die Verlustquote gewichtet nach Menge: Eine von zwei Portionen zählt als halber Eintrag. So sind Gramm, Stück und Beutel vergleichbar.")
+            Text("D Verlustquote gwichtet nach Mängi: Ei vo zwo Portione zeut aus haube Iitrag. So si Gramm, Stück u Sack vergliechbar.")
                 .font(.caption)
                 .foregroundStyle(Theme.textTertiary)
         }
@@ -132,7 +132,7 @@ struct StatisticsView: View {
         } header: {
             sectionHeader("Nach Kategorie")
         } footer: {
-            Text("Oben steht, wo am meisten verloren geht. Kategorien mit hoher Quote lohnen einen kürzeren Richtwert unter Einstellungen → Haltbarkeits-Richtwerte.")
+            Text("Obe steit, wo am meischte verlore geit. Kategorie mit hocher Quote lohne ne chürzere Richtwärt under Istellige → Haltbarkeits-Richtwärt.")
                 .font(.caption)
                 .foregroundStyle(Theme.textTertiary)
         }
@@ -140,7 +140,7 @@ struct StatisticsView: View {
     }
 
     private func secondaryText(_ entry: CategoryStatistics) -> String {
-        var parts = ["\(entry.discardedCount) von \(entry.eventCount) Entnahmen"]
+        var parts = ["\(entry.discardedCount) vo \(entry.eventCount) Usenahme"]
         if let days = entry.averageStorageDays {
             parts.append("Ø \(days) T")
         }

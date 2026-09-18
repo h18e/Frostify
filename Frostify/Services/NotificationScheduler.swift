@@ -151,10 +151,10 @@ final class NotificationScheduler {
 
     private func digestBody(count: Int, horizon: Int, names: [String]) -> String {
         let lead = count == 1
-            ? "1 Produkt läuft in den nächsten \(horizon) Tagen ab"
-            : "\(count) Produkte laufen in den nächsten \(horizon) Tagen ab"
+            ? "1 Produkt louft i de nächschte \(horizon) Täg ab"
+            : "\(count) Produkt loufe i de nächschte \(horizon) Täg ab"
         guard !names.isEmpty else { return lead + "." }
-        let suffix = count > names.count ? " und weitere" : ""
+        let suffix = count > names.count ? " u wyteri" : ""
         return "\(lead): \(names.joined(separator: ", "))\(suffix)."
     }
 
@@ -193,8 +193,8 @@ final class NotificationScheduler {
 
         for (item, fireDate) in upcoming {
             let content = UNMutableNotificationContent()
-            content.title = "Bald fällig"
-            content.body = "\(item.displayName) läuft in \(lead) Tagen ab."
+            content.title = "Bau fäuig"
+            content.body = "\(item.displayName) louft i \(lead) Täg ab."
             content.sound = .default
 
             let components = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: fireDate)

@@ -32,7 +32,7 @@ struct ItemDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button("Bearbeiten", systemImage: "pencil") { showEditor = true }
+                Button("Bearbeite", systemImage: "pencil") { showEditor = true }
             }
         }
         .sheet(isPresented: $showConsume) {
@@ -42,17 +42,17 @@ struct ItemDetailView: View {
             ItemEditorView(target: .edit(item))
         }
         .confirmationDialog(
-            "Ganzen Rest wegwerfen?",
+            "Dr ganz Rescht wägschmeisse?",
             isPresented: $confirmDiscardAll,
             titleVisibility: .visible
         ) {
-            Button("Wegwerfen", role: .destructive) {
+            Button("Wägschmeisse", role: .destructive) {
                 inventory.consumeAll(item, kind: .discarded)
                 dismiss()
             }
-            Button("Abbrechen", role: .cancel) {}
+            Button("Abbräche", role: .cancel) {}
         } message: {
-            Text("Der Eintrag wandert ins Archiv und zählt dort als Verlust.")
+            Text("Dr Iitrag wanderet is Archiv u zeut dert aus Verlust.")
         }
         .onChange(of: item.closedAt) { _, newValue in
             // Nach "Alles entnehmen" gehoert der Eintrag ins Archiv – die Detailansicht
@@ -72,11 +72,11 @@ struct ItemDetailView: View {
                 Text(item.quantitySummary)
                     .font(.headline)
             }
-            LabeledContent("Empfohlen bis") {
+            LabeledContent("Empfohle bis") {
                 Text(item.resolvedBestBefore(using: table), style: .date)
             }
             if item.bestBeforeIsManual {
-                Text("Von Hand gesetzt")
+                Text("Vo Hand gsetzt")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -84,21 +84,21 @@ struct ItemDetailView: View {
     }
 
     private var detailsSection: some View {
-        Section("Angaben") {
+        Section("Angabe") {
             LabeledContent("Kategorie") {
                 Label(item.category.displayName, systemImage: item.category.symbolName)
             }
-            LabeledContent("Eingefroren am") {
+            LabeledContent("Igfrore am") {
                 Text(item.frozenDate, style: .date)
             }
             if item.initialQuantity > 0 {
-                LabeledContent("Ursprünglich", value: QuantityFormatter.string(item.initialQuantity, unit: item.unit))
+                LabeledContent("Ursprünglech", value: QuantityFormatter.string(item.initialQuantity, unit: item.unit))
             }
             if item.hasPortions {
-                LabeledContent("Portionen ursprünglich", value: "\(item.initialPortions)")
+                LabeledContent("Portione ursprünglech", value: "\(item.initialPortions)")
             }
             if !item.noteText.isEmpty {
-                LabeledContent("Bemerkung", value: item.noteText)
+                LabeledContent("Bemerkig", value: item.noteText)
             }
             if !item.storageLocationText.isEmpty {
                 LabeledContent("Lagerort", value: item.storageLocationText)
@@ -109,13 +109,13 @@ struct ItemDetailView: View {
                 }
             }
             if !(item.createdByName ?? "").isEmpty {
-                LabeledContent("Erfasst von", value: item.createdByName ?? "")
+                LabeledContent("Erfasst vo", value: item.createdByName ?? "")
             }
         }
     }
 
     private var historySection: some View {
-        Section("Verlauf") {
+        Section("Verlouf") {
             ForEach(item.eventList, id: \.objectID) { event in
                 HStack {
                     Label {
@@ -140,7 +140,7 @@ struct ItemDetailView: View {
                     Button(role: .destructive) {
                         inventory.deleteEvent(event)
                     } label: {
-                        Label("Löschen", systemImage: "trash")
+                        Label("Lösche", systemImage: "trash")
                     }
                 }
             }
@@ -152,27 +152,27 @@ struct ItemDetailView: View {
             Button {
                 showConsume = true
             } label: {
-                Label("Entnehmen", systemImage: "minus.circle.fill")
+                Label("Usenäh", systemImage: "minus.circle.fill")
             }
 
             Button {
                 inventory.consumeAll(item, kind: .consumed)
                 dismiss()
             } label: {
-                Label("Alles entnehmen", systemImage: "checkmark.circle")
+                Label("Aues usenäh", systemImage: "checkmark.circle")
             }
 
             Button(role: .destructive) {
                 confirmDiscardAll = true
             } label: {
-                Label("Weggeworfen", systemImage: "trash")
+                Label("Wäggschmisse", systemImage: "trash")
             }
         }
     }
 
     private var archiveSection: some View {
         Section {
-            LabeledContent("Abgeschlossen") {
+            LabeledContent("Abgschlosse") {
                 Text(item.closedAt ?? Date(), style: .date)
             }
             if let reason = item.closeReason {
@@ -181,10 +181,10 @@ struct ItemDetailView: View {
             Button {
                 inventory.reopen(item)
             } label: {
-                Label("Wiederherstellen", systemImage: "arrow.uturn.backward")
+                Label("Zrügghole", systemImage: "arrow.uturn.backward")
             }
         } footer: {
-            Text("Wiederherstellen nimmt die letzte Entnahme zurück und holt den Eintrag in den Bestand.")
+            Text("Zrügghole nimmt di letscht Usenahm zrügg u hout dr Iitrag i Vorrat.")
         }
     }
 }

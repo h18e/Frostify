@@ -46,21 +46,21 @@ struct ConsumeSheet: View {
         NavigationStack {
             Form {
                 Section {
-                    LabeledContent("Vorhanden", value: item.quantitySummary)
+                    LabeledContent("Vorhande", value: item.quantitySummary)
                     if !item.noteText.isEmpty {
-                        LabeledContent("Bemerkung", value: item.noteText)
+                        LabeledContent("Bemerkig", value: item.noteText)
                     }
                 } header: {
                     Text(item.displayName)
                 }
 
                 if item.hasPortions {
-                    Section("Portionen entnehmen") {
+                    Section("Portione usenäh") {
                         Stepper(value: portionsBinding, in: 0...item.remainingPortions) {
                             HStack {
-                                Text("Portionen")
+                                Text("Portione")
                                 Spacer()
-                                Text("\(portions) von \(item.remainingPortions)")
+                                Text("\(portions) vo \(item.remainingPortions)")
                                     .foregroundStyle(.secondary)
                             }
                         }
@@ -68,10 +68,10 @@ struct ConsumeSheet: View {
                 }
 
                 if item.initialQuantity > 0 {
-                    Section("Menge entnehmen") {
+                    Section("Mängi usenäh") {
                         Stepper(value: quantityBinding, in: 0...item.remainingQuantity, step: item.unit.step) {
                             HStack {
-                                Text("Menge")
+                                Text("Mängi")
                                 Spacer()
                                 Text(QuantityFormatter.string(quantity, unit: item.unit))
                                     .foregroundStyle(.secondary)
@@ -79,7 +79,7 @@ struct ConsumeSheet: View {
                         }
 
                         Slider(value: quantityBinding, in: 0...max(item.remainingQuantity, 0.001)) {
-                            Text("Menge")
+                            Text("Mängi")
                         }
                         .accessibilityValue(QuantityFormatter.string(quantity, unit: item.unit))
                     }
@@ -94,15 +94,15 @@ struct ConsumeSheet: View {
                     .pickerStyle(.segmented)
                 } footer: {
                     Text(kind == .discarded
-                         ? "Weggeworfenes zählt in der Statistik als Verlust – genau das zeigt später, wo sich die Richtwerte lohnen."
-                         : "Danach übrig: \(remainingSummary)")
+                         ? "Was du wägschmeisst, zeut i dr Statistik aus Verlust – genau das zeigt speter, wo sech d Richtwärt loh."
+                         : "Nachhär no da: \(remainingSummary)")
                 }
 
                 Section {
                     Button {
                         confirm(quantity: quantity, portions: portions)
                     } label: {
-                        Label("Entnehmen", systemImage: "minus.circle.fill")
+                        Label("Usenäh", systemImage: "minus.circle.fill")
                             .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(.borderedProminent)
@@ -111,7 +111,7 @@ struct ConsumeSheet: View {
                     Button {
                         confirm(quantity: item.remainingQuantity, portions: item.remainingPortions)
                     } label: {
-                        Label("Alles entnehmen", systemImage: "checkmark.circle")
+                        Label("Aues usenäh", systemImage: "checkmark.circle")
                             .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(.bordered)
@@ -119,11 +119,11 @@ struct ConsumeSheet: View {
             }
             .listRowBackground(Theme.surface)
             .themedList()
-            .navigationTitle("Entnehmen")
+            .navigationTitle("Usenäh")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Abbrechen") { dismiss() }
+                    Button("Abbräche") { dismiss() }
                 }
             }
         }
@@ -137,13 +137,13 @@ struct ConsumeSheet: View {
         if item.hasPortions {
             parts.append(QuantityFormatter.portionsString(remainingAfter.portions))
         }
-        let text = parts.isEmpty ? "nichts" : parts.joined(separator: " · ")
+        let text = parts.isEmpty ? "nüt" : parts.joined(separator: " · ")
         let empty = QuantityMath.isEmpty(
             remainingQuantity: remainingAfter.quantity,
             remainingPortions: remainingAfter.portions,
             hasPortions: item.hasPortions
         )
-        return empty ? "\(text) – der Eintrag wandert ins Archiv" : text
+        return empty ? "\(text) – dr Iitrag wanderet is Archiv" : text
     }
 
     // Die beiden Bindungen setzen jeweils **beide** Werte direkt. Dadurch kann sich

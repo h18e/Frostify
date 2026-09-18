@@ -53,11 +53,11 @@ enum SharingError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .sharedStoreUnavailable:
-            return "Der geteilte Bereich konnte nicht geladen werden. Prüfe, ob du in den iOS-Einstellungen bei iCloud angemeldet bist."
+            return "Dr teilt Bereich het sech nid la lade. Lueg, öb du i de iOS-Istellige bi iCloud aagmäudet bisch."
         case .noCloudAccount:
-            return "Für das Teilen musst du in den iOS-Einstellungen bei iCloud angemeldet sein."
+            return "Zum Teile muesch i de iOS-Istellige bi iCloud aagmäudet si."
         case .shareCreationFailed:
-            return "Die Einladung konnte nicht erstellt werden. Versuch es später nochmals."
+            return "D Iiladig het sech nid la erstelle. Probier's speter nomau."
         }
     }
 }

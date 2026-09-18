@@ -88,9 +88,18 @@ möglich.
 
 ## Sprache
 
-Frostify ist einsprachig: Hochdeutsch in Schweizer Schreibweise, die Texte stehen
-als Literale direkt im Swift-Code. SwiftUI benutzt sie als Schlüssel und zeigt sie
-unverändert an, solange es keine Übersetzung gibt.
+Frostify spricht **Berndeutsch**. Die Texte stehen als Literale direkt im
+Swift-Code; SwiftUI benutzt sie als Schlüssel und zeigt sie unverändert an,
+solange es keine Übersetzung gibt.
+
+Mundart hat keine amtliche Rechtschreibung. Verwendet wird durchgehend:
+L-Vokalisierung (`viu`, `aues`, `fäuig`), `-ig` statt `-ung` (`Bemerkig`,
+`Istellige`), `nid`/`nüt`/`no`, und Du-Form. Wochentage stehen fest in
+`Model/Weekday.swift`, weil `Calendar` sie in der Systemsprache liefert.
+
+Nicht übersetzt sind bewusst: der nur in Debug-Builds sichtbare Bereich
+„Entwicklung" in den Einstellungen, Log-Meldungen und Kommentare im Code –
+die richten sich an Entwickler, nicht an Benutzer.
 
 Ein String Catalog liegt bewusst **nicht** im Git: Xcode füllt ihn bei jedem Bauen
 neu mit den aus dem Code gezogenen Texten, er ist also eine abgeleitete Datei und

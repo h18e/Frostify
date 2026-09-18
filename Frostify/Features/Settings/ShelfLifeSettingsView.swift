@@ -14,11 +14,11 @@ struct ShelfLifeSettingsView: View {
                         VStack(alignment: .leading, spacing: 2) {
                             Label(category.displayName, systemImage: category.symbolName)
                             HStack(spacing: 4) {
-                                Text("\(table.months(for: category)) Monate")
+                                Text("\(table.months(for: category)) Mönet")
                                     .font(.caption)
                                     .foregroundStyle(.secondary)
                                 if table.isOverridden(category) {
-                                    Text("· angepasst")
+                                    Text("· aapasst")
                                         .font(.caption)
                                         .foregroundStyle(.orange)
                                 }
@@ -27,13 +27,13 @@ struct ShelfLifeSettingsView: View {
                     }
                 }
             } header: {
-                Text("Richtwerte")
+                Text("Richtwärt")
             } footer: {
-                Text("Aus Einfrierdatum und Richtwert berechnet Frostify das „empfohlen bis“-Datum. Bereits erfasste Einträge behalten ihr Datum – ein geänderter Richtwert wirkt auf neue Einträge.")
+                Text("Us em Igfrier-Datum u em Richtwärt rächnet Frostify ds „empfohle bis“-Datum. Scho erfassti Iiträg bhaute ihres Datum – e gänderete Richtwärt wirkt uf nöii Iiträg.")
             }
 
             Section {
-                Button("Alle auf Standard zurücksetzen", systemImage: "arrow.uturn.backward") {
+                Button("Aui uf Standard zrügsetze", systemImage: "arrow.uturn.backward") {
                     table.resetAll()
                     inventory.updateShelfLife(table)
                 }

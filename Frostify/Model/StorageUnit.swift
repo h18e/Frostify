@@ -18,8 +18,8 @@ enum StorageUnit: String, CaseIterable, Identifiable, Sendable {
         case .gram: return "g"
         case .kilogram: return "kg"
         case .piece: return "Stk."
-        case .bag: return "Beutel"
-        case .package: return "Pack."
+        case .bag: return "Sack"
+        case .package: return "Päckli"
         case .milliliter: return "ml"
         case .liter: return "l"
         }
@@ -29,10 +29,10 @@ enum StorageUnit: String, CaseIterable, Identifiable, Sendable {
     var displayName: String {
         switch self {
         case .gram: return "Gramm"
-        case .kilogram: return "Kilogramm"
+        case .kilogram: return "Kilo"
         case .piece: return "Stück"
-        case .bag: return "Beutel"
-        case .package: return "Packung"
+        case .bag: return "Sack"
+        case .package: return "Päckli"
         case .milliliter: return "Milliliter"
         case .liter: return "Liter"
         }
@@ -77,6 +77,6 @@ enum QuantityFormatter {
     }
 
     static func portionsString(_ portions: Int) -> String {
-        portions == 1 ? "1 Portion" : "\(portions) Portionen"
+        portions == 1 ? "1 Portion" : "\(portions) Portione"
     }
 }

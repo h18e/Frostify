@@ -14,10 +14,10 @@ enum ExpiryState: Int, CaseIterable, Comparable, Sendable {
 
     var displayName: String {
         switch self {
-        case .expired: return "Überschritten"
-        case .urgent: return "Dringend"
-        case .soon: return "Bald verbrauchen"
-        case .fine: return "In Ordnung"
+        case .expired: return "Abglaufe"
+        case .urgent: return "Pressiert"
+        case .soon: return "Bau bruche"
+        case .fine: return "Guet"
         }
     }
 
@@ -67,14 +67,14 @@ enum ExpiryCalculator {
     /// Kurztext fuer die Listenzeile, z. B. "noch 5 Tage" oder "seit 3 Tagen überschritten".
     static func remainingText(daysRemaining days: Int) -> String {
         switch days {
-        case ..<(-1): return "seit \(-days) Tagen überschritten"
-        case -1: return "seit gestern überschritten"
-        case 0: return "läuft heute ab"
-        case 1: return "noch 1 Tag"
-        case 2...60: return "noch \(days) Tage"
+        case ..<(-1): return "sit \(-days) Täg abglaufe"
+        case -1: return "sit geschter abglaufe"
+        case 0: return "louft hüt ab"
+        case 1: return "no 1 Tag"
+        case 2...60: return "no \(days) Täg"
         default:
             let months = days / 30
-            return months <= 1 ? "noch gut 1 Monat" : "noch gut \(months) Monate"
+            return months <= 1 ? "no guet 1 Monet" : "no guet \(months) Mönet"
         }
     }
 }

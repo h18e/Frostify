@@ -11,15 +11,15 @@ struct ReminderSettingsView: View {
     var body: some View {
         Form {
             Section {
-                Toggle("Wöchentliche Sammelmeldung", isOn: remindersEnabledBinding)
+                Toggle("Mäudig jedi Wuche", isOn: remindersEnabledBinding)
 
                 if preferences.remindersEnabled {
-                    Picker("Wochentag", selection: weekdayBinding) {
+                    Picker("Wuchetag", selection: weekdayBinding) {
                         ForEach(1...7, id: \.self) { weekday in
-                            Text(Calendar.current.weekdaySymbols[weekday - 1]).tag(weekday)
+                            Text(Weekday.name(weekday)).tag(weekday)
                         }
                     }
-                    DatePicker("Uhrzeit", selection: $reminderTime, displayedComponents: .hourAndMinute)
+                    DatePicker("Zit", selection: $reminderTime, displayedComponents: .hourAndMinute)
                         .onChange(of: reminderTime) { _, newValue in
                             let components = Calendar.current.dateComponents([.hour, .minute], from: newValue)
                             preferences.reminderHour = components.hour ?? 18
@@ -28,41 +28,41 @@ struct ReminderSettingsView: View {
                         }
                     Stepper(value: horizonBinding, in: 1...60, step: 1) {
                         HStack {
-                            Text("Vorschau")
+                            Text("Vorschou")
                             Spacer()
-                            Text("\(preferences.reminderHorizonDays) Tage")
+                            Text("\(preferences.reminderHorizonDays) Täg")
                                 .foregroundStyle(.secondary)
                         }
                     }
                 }
             } header: {
-                Text("Sammelmeldung")
+                Text("Wuche-Mäudig")
             } footer: {
                 Text(preferences.remindersEnabled
-                     ? "Eine Meldung pro Woche (\(preferences.reminderTimeDescription)) mit allem, was in den nächsten \(preferences.reminderHorizonDays) Tagen abläuft."
-                     : "Ohne Erinnerungen musst du selbst daran denken, in die App zu schauen.")
+                     ? "Ei Mäudig pro Wuche (\(preferences.reminderTimeDescription)) mit auem, wo i de nächschte \(preferences.reminderHorizonDays) Täg ablouft."
+                     : "Ohni Erinnerige muesch säuber dra dänke, i d App z luege.")
             }
 
             Section {
-                Toggle("Einzelmeldung pro Produkt", isOn: perItemBinding)
+                Toggle("Eigeti Mäudig pro Produkt", isOn: perItemBinding)
                 if preferences.perItemRemindersEnabled {
                     Stepper(value: leadBinding, in: 1...30) {
                         HStack {
-                            Text("Vorlauf")
+                            Text("Vorlouf")
                             Spacer()
-                            Text("\(preferences.perItemLeadDays) Tage")
+                            Text("\(preferences.perItemLeadDays) Täg")
                                 .foregroundStyle(.secondary)
                         }
                     }
                 }
             } footer: {
-                Text("Zusätzlich zur Sammelmeldung, je Produkt eine eigene Mitteilung. Standardmässig aus, damit es nicht zu viele werden.")
+                Text("Zuesätzlech zur Wuche-Mäudig, pro Produkt e eigeti Mitteilig. Standardmässig us, damit's nid z viu wärde.")
             }
 
             Section {
-                LabeledContent("Berechtigung", value: statusText)
+                LabeledContent("Berächtigung", value: statusText)
                 if authorizationStatus == .denied {
-                    Text("In den iOS-Einstellungen unter Mitteilungen → Frostify wieder erlauben.")
+                    Text("I de iOS-Istellige under Mitteilige → Frostify wieder erloube.")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -72,7 +72,7 @@ struct ReminderSettingsView: View {
         }
         .listRowBackground(Theme.surface)
         .themedList()
-        .navigationTitle("Erinnerungen")
+        .navigationTitle("Erinnerige")
         .navigationBarTitleDisplayMode(.inline)
         .task {
             var components = DateComponents()
@@ -86,8 +86,8 @@ struct ReminderSettingsView: View {
     private var statusText: String {
         switch authorizationStatus {
         case .authorized, .provisional, .ephemeral: return "Erteilt"
-        case .denied: return "Verweigert"
-        case .notDetermined: return "Noch nicht gefragt"
+        case .denied: return "Verweigeret"
+        case .notDetermined: return "No nid gfragt"
         @unknown default: return "Unbekannt"
         }
     }

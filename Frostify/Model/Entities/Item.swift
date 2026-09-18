@@ -39,7 +39,7 @@ extension Item {
 
     var displayName: String {
         let trimmed = (name ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
-        return trimmed.isEmpty ? "Ohne Namen" : trimmed
+        return trimmed.isEmpty ? "Ohni Name" : trimmed
     }
 
     var category: FoodCategory {

@@ -9,7 +9,7 @@ enum InventoryGrouping: String, CaseIterable, Identifiable {
 
     var displayName: String {
         switch self {
-        case .expiry: return "Ablauf"
+        case .expiry: return "Ablouf"
         case .category: return "Kategorie"
         case .location: return "Lagerort"
         }
@@ -34,8 +34,8 @@ enum InventorySorting: String, CaseIterable, Identifiable {
 
     var displayName: String {
         switch self {
-        case .bestBefore: return "Empfohlen bis"
-        case .frozenAt: return "Einfrierdatum"
+        case .bestBefore: return "Empfohle bis"
+        case .frozenAt: return "Igfrore am"
         case .name: return "Name"
         case .category: return "Kategorie"
         }
@@ -122,13 +122,13 @@ enum InventorySectionBuilder {
         case .location:
             let grouped = Dictionary(grouping: sorted) { item -> String in
                 let location = item.storageLocationText.trimmingCharacters(in: .whitespacesAndNewlines)
-                return location.isEmpty ? "Ohne Lagerort" : location
+                return location.isEmpty ? "Ohni Lagerort" : location
             }
             return grouped
                 .map { section(id: "loc-\($0.key)", title: $0.key, items: $0.value) }
                 .sorted { lhs, rhs in
-                    if lhs.title == "Ohne Lagerort" { return false }
-                    if rhs.title == "Ohne Lagerort" { return true }
+                    if lhs.title == "Ohni Lagerort" { return false }
+                    if rhs.title == "Ohni Lagerort" { return true }
                     return lhs.title.localizedCaseInsensitiveCompare(rhs.title) == .orderedAscending
                 }
         }
@@ -136,7 +136,7 @@ enum InventorySectionBuilder {
 
     private static func section(id: String, title: String, items: [Item]) -> InventorySection {
         let portions = items.reduce(0) { $0 + $1.remainingPortions }
-        var subtitle = items.count == 1 ? "1 Eintrag" : "\(items.count) Einträge"
+        var subtitle = items.count == 1 ? "1 Iitrag" : "\(items.count) Iiträg"
         if portions > 0 {
             subtitle += " · \(QuantityFormatter.portionsString(portions))"
         }

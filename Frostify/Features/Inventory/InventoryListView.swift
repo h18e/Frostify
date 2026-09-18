@@ -51,9 +51,9 @@ struct InventoryListView: View {
                 if activeItems.isEmpty {
                     EmptyStateView(
                         symbol: "snowflake",
-                        title: "Tiefkühler ist leer",
-                        message: "Erfasse dein erstes Produkt über das Plus oben rechts.",
-                        actionTitle: "Produkt erfassen",
+                        title: "Dr Tiefchüeler isch läär",
+                        message: "Erfass dys erschte Produkt übers Plus obe rächts.",
+                        actionTitle: "Produkt erfasse",
                         action: { editorTarget = .create(ItemDraft.new(table: table)) }
                     )
                     .frame(maxHeight: .infinity)
@@ -62,8 +62,8 @@ struct InventoryListView: View {
                     list
                 }
             }
-            .navigationTitle("Bestand")
-            .searchable(text: $searchText, prompt: "Name, Bemerkung oder Lagerort")
+            .navigationTitle("Vorrat")
+            .searchable(text: $searchText, prompt: "Name, Bemerkig oder Lagerort")
             .toolbar { toolbarContent }
             .sheet(item: $editorTarget) { target in
                 ItemEditorView(target: target)
@@ -78,20 +78,20 @@ struct InventoryListView: View {
                 }
             }
             .confirmationDialog(
-                "Eintrag wirklich löschen?",
+                "Iitrag würklech lösche?",
                 isPresented: Binding(
                     get: { pendingDeletion != nil },
                     set: { if !$0 { pendingDeletion = nil } }
                 ),
                 titleVisibility: .visible
             ) {
-                Button("Löschen", role: .destructive) {
+                Button("Lösche", role: .destructive) {
                     if let pendingDeletion { inventory.delete(pendingDeletion) }
                     pendingDeletion = nil
                 }
-                Button("Abbrechen", role: .cancel) { pendingDeletion = nil }
+                Button("Abbräche", role: .cancel) { pendingDeletion = nil }
             } message: {
-                Text("Löschen entfernt den Eintrag mitsamt Verlauf. Wenn du ihn aufgebraucht hast, nimm stattdessen „Alles entnehmen“ – dann bleibt er im Archiv.")
+                Text("Lösche nimmt dr Iitrag mitsamt em Verlouf wäg. Wenn du ne ufbrucht hesch, nimm statt däm „Aues usenäh“ – de blibt er im Archiv.")
             }
         }
     }
@@ -107,7 +107,7 @@ struct InventoryListView: View {
                 // Die Gruppierung steht bewusst sichtbar hier und nicht im Menü:
                 // "Was habe ich eigentlich alles da" ist ein haeufiger Blick, der
                 // keinen Umweg ueber ein Untermenue verdient.
-                Picker("Gruppieren", selection: groupingBinding) {
+                Picker("Gruppiere", selection: groupingBinding) {
                     ForEach(InventoryGrouping.allCases) { grouping in
                         Text(grouping.displayName).tag(grouping)
                     }
@@ -121,8 +121,8 @@ struct InventoryListView: View {
             if filteredItems.isEmpty {
                 Section {
                     Text(activeFilter == nil
-                         ? "Keine Treffer für „\(searchText)“."
-                         : "Keine Produkte in dieser Ampelstufe.")
+                         ? "Kei Träffer für „\(searchText)“."
+                         : "Kei Produkt i dere Ampustufe.")
                         .font(.subheadline)
                         .foregroundStyle(Theme.textSecondary)
                         .listRowBackground(Theme.surface)
@@ -142,7 +142,7 @@ struct InventoryListView: View {
                             Button {
                                 consumeTarget = ConsumeTarget(item: item)
                             } label: {
-                                Label("Entnehmen", systemImage: "minus.circle")
+                                Label("Usenäh", systemImage: "minus.circle")
                             }
                             .tint(Theme.accent)
                         }
@@ -150,12 +150,12 @@ struct InventoryListView: View {
                             Button(role: .destructive) {
                                 pendingDeletion = item
                             } label: {
-                                Label("Löschen", systemImage: "trash")
+                                Label("Lösche", systemImage: "trash")
                             }
                             Button {
                                 editorTarget = .edit(item)
                             } label: {
-                                Label("Bearbeiten", systemImage: "pencil")
+                                Label("Bearbeite", systemImage: "pencil")
                             }
                             .tint(Theme.surfaceElevated)
                         }
@@ -183,31 +183,31 @@ struct InventoryListView: View {
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
             Menu {
-                Picker("Sortieren nach", selection: sortingBinding) {
+                Picker("Sortiere nach", selection: sortingBinding) {
                     ForEach(InventorySorting.allCases) { sorting in
                         Text(sorting.displayName).tag(sorting)
                     }
                 }
                 if activeFilter != nil {
-                    Button("Filter aufheben", systemImage: "line.3.horizontal.decrease.circle") {
+                    Button("Filter ufhebe", systemImage: "line.3.horizontal.decrease.circle") {
                         activeFilter = nil
                     }
                 }
             } label: {
-                Label("Sortierung", systemImage: "arrow.up.arrow.down")
+                Label("Sortierig", systemImage: "arrow.up.arrow.down")
             }
         }
 
         ToolbarItem(placement: .topBarTrailing) {
             Menu {
-                Button("Manuell erfassen", systemImage: "square.and.pencil") {
+                Button("Vo Hand erfasse", systemImage: "square.and.pencil") {
                     editorTarget = .create(ItemDraft.new(table: table))
                 }
-                Button("Barcode scannen", systemImage: "barcode.viewfinder") {
+                Button("Barcode scanne", systemImage: "barcode.viewfinder") {
                     showScanner = true
                 }
             } label: {
-                Label("Erfassen", systemImage: "plus")
+                Label("Erfasse", systemImage: "plus")
             }
         }
     }
@@ -241,7 +241,7 @@ struct ConsumeTarget: Identifiable {
     var id: NSManagedObjectID { item.objectID }
 }
 
-#Preview("Bestand") {
+#Preview("Vorrat") {
     InventoryListView()
         .environment(\.managedObjectContext, PersistenceController.preview.viewContext)
         .environmentObject(AppPreferences.shared)

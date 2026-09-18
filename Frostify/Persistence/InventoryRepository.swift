@@ -80,7 +80,7 @@ final class InventoryRepository: InventoryRepositoryProtocol {
     private func createFreezer() -> Freezer {
         let freezer = Freezer(context: context)
         freezer.id = UUID()
-        freezer.name = "Tiefkühler"
+        freezer.name = "Tiefchüeler"
         freezer.createdAt = Date()
 
         let settings = FreezerSettings(context: context)

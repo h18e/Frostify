@@ -102,7 +102,6 @@ final class AppPreferences: ObservableObject {
     }
 
     var reminderTimeDescription: String {
-        let weekdayName = Calendar.current.weekdaySymbols[max(0, min(6, reminderWeekday - 1))]
-        return String(format: "%@, %02d:%02d Uhr", weekdayName, reminderHour, reminderMinute)
+        return String(format: "%@, %02d:%02d Uhr", Weekday.name(reminderWeekday), reminderHour, reminderMinute)
     }
 }
