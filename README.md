@@ -8,6 +8,7 @@ Person geteilt.
 - **Ersteinrichtung:** [SETUP.md](SETUP.md) ← hier anfangen
 - **Vor einer Veröffentlichung:** [RELEASE.md](RELEASE.md)
 - **Datenschutz:** [PRIVACY.md](PRIVACY.md)
+- **Alle Texte der App:** [TEXTE.md](TEXTE.md) (erzeugt mit `tools/list_texts.py`)
 
 ## Überblick
 
