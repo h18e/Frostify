@@ -70,11 +70,13 @@ beiden Geräte überschrieben, wenn ihr gleichzeitig offline etwas entnehmt – 
 Entnahme ginge stillschweigend verloren. Entnahmen sind eigene, nur angehängte
 Datensätze und können sich nicht gegenseitig überschreiben.
 
-**Die Statistik zählt Entnahmen, nicht Einträge.** Wer eine von zwei Portionen isst
+**Archiv und Statistik zählen Entnahmen, nicht Einträge.** Wer eine von zwei Portionen isst
 und die zweite wegwirft, hat eine Portion gegessen und eine weggeworfen. Eine
 Auswertung je abgeschlossenem Eintrag müsste sich für eines von beidem entscheiden
 und verlöre die andere Hälfte. Jede Entnahme trägt ihren Anteil am Eintrag
 (200 g von 400 g = 0,5), wodurch Gramm, Stück und Beutel vergleichbar werden.
+Im Archiv wird aus einem solchen Eintrag entsprechend eine Zeile unter „Gegessen"
+und eine unter „Weggeworfen" – beide Ansichten zählen damit dasselbe.
 
 **Core Data statt SwiftData.** Bei der Oberfläche ist das Neueste auch das Beste, bei
 der Persistenz nicht: Das Teilen zwischen zwei Apple-IDs ist der riskanteste Teil des

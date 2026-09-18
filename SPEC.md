@@ -174,8 +174,11 @@ Fest verdrahtete Liste (als Swift-Enum), Richtwert je Kategorie in `FreezerSetti
   wenn sich Daten ändern oder die App startet – so bekommt ihr sie beide.
 
 ### 3.5 Archiv & Statistik
-- Archiv: alle abgeschlossenen Einträge, filterbar nach "gegessen"/"weggeworfen",
-  Zeitraum und Kategorie. Wiederherstellen ist möglich (Fehlbedienung).
+- Archiv: Liste **einzelner Entnahmen**, nicht abgeschlossener Produkte. Wer eine
+  von zwei Portionen isst und die zweite wegwirft, findet denselben Eintrag mit
+  einer Zeile unter „Gegessen" und einer unter „Weggeworfen". Filterbar nach Grund,
+  Zeitraum und Text; ein Schalter blendet Produkte aus, die noch im Bestand liegen.
+  Wiederherstellen eines Eintrags ist in der Detailansicht möglich (Fehlbedienung).
 - Statistik: gezählt werden **einzelne Entnahmen**, nicht abgeschlossene Einträge.
   Jede Entnahme trägt ihren Anteil am Eintrag (200 g von 400 g = 0,5), wodurch
   Gramm, Stück und Beutel vergleichbar werden. Angezeigt werden Anzahl gegessener

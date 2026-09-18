@@ -1,30 +1,34 @@
 import CoreData
 import SwiftUI
 
-/// Alles, was den Tiefkuehler verlassen hat.
+/// Alles, was den Tiefkühler verlassen hat – als Liste **einzelner Entnahmen**.
+///
+/// Bewusst nicht je Produkt: Wer eine von zwei Portionen isst und die zweite
+/// wegwirft, hat eine Portion gegessen und eine weggeworfen. Eine Liste je Produkt
+/// müsste sich für eines von beidem entscheiden; aus einem Eintrag werden hier
+/// deshalb zwei Zeilen. Damit stimmen Archiv und Statistik auch überein – beide
+/// zählen dasselbe.
 struct ArchiveView: View {
-    @Environment(\.inventory) private var inventory
-
     @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Item.closedAt, ascending: false)],
-        predicate: NSPredicate(format: "closedAt != nil"),
+        sortDescriptors: [NSSortDescriptor(keyPath: \ConsumptionEvent.date, ascending: false)],
         animation: .default
     )
-    private var closedItems: FetchedResults<Item>
+    private var events: FetchedResults<ConsumptionEvent>
 
     @State private var kindFilter: ConsumptionKind?
     @State private var timeframe: ArchiveTimeframe = .lastYear
+    @State private var onlyClosed = false
     @State private var searchText = ""
 
-    private var table: ShelfLifeTable { inventory.shelfLifeTable }
-
-    private var filtered: [Item] {
+    private var filtered: [ConsumptionEvent] {
         let cutoff = timeframe.cutoffDate
         let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
 
-        return closedItems.filter { item in
-            if let cutoff, (item.closedAt ?? .distantPast) < cutoff { return false }
-            if let kindFilter, item.closeReason != kindFilter { return false }
+        return events.filter { event in
+            guard let item = event.item else { return false }
+            if let cutoff, event.eventDate < cutoff { return false }
+            if let kindFilter, event.kind != kindFilter { return false }
+            if onlyClosed, !item.isClosed { return false }
             if !query.isEmpty {
                 let haystack = [item.displayName, item.noteText, item.category.displayName]
                     .joined(separator: " ")
@@ -38,11 +42,11 @@ struct ArchiveView: View {
     var body: some View {
         NavigationStack {
             Group {
-                if closedItems.isEmpty {
+                if events.isEmpty {
                     EmptyStateView(
                         symbol: "archivebox",
-                        title: "Archiv ist leer",
-                        message: "Sobald du etwas ganz entnimmst oder wegwirfst, erscheint es hier."
+                        title: "Noch nichts entnommen",
+                        message: "Sobald du etwas aus dem Tiefkühler nimmst oder wegwirfst, erscheint es hier."
                     )
                     .frame(maxHeight: .infinity)
                     .screenBackground()
@@ -79,12 +83,14 @@ struct ArchiveView: View {
                         Text(frame.displayName).tag(frame)
                     }
                 }
+
+                Toggle("Nur aufgebrauchte Produkte", isOn: $onlyClosed)
             }
             .listRowBackground(Theme.surface)
 
             if filtered.isEmpty {
                 Section {
-                    Text("Keine Einträge in dieser Auswahl.")
+                    Text("Keine Entnahmen in dieser Auswahl.")
                         .font(.subheadline)
                         .foregroundStyle(Theme.textSecondary)
                 }
@@ -92,15 +98,17 @@ struct ArchiveView: View {
             }
 
             Section {
-                ForEach(filtered, id: \.objectID) { item in
-                    NavigationLink {
-                        ItemDetailView(item: item)
-                    } label: {
-                        ArchiveRow(item: item)
+                ForEach(filtered, id: \.objectID) { event in
+                    if let item = event.item {
+                        NavigationLink {
+                            ItemDetailView(item: item)
+                        } label: {
+                            ConsumptionRow(event: event, item: item)
+                        }
                     }
                 }
             } header: {
-                Text(filtered.count == 1 ? "1 Eintrag" : "\(filtered.count) Einträge")
+                Text(headerText)
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(Theme.textSecondary)
                     .textCase(nil)
@@ -110,9 +118,15 @@ struct ArchiveView: View {
         .listStyle(.insetGrouped)
         .themedList()
     }
+
+    private var headerText: String {
+        filtered.count == 1 ? "1 Entnahme" : "\(filtered.count) Entnahmen"
+    }
 }
 
-private struct ArchiveRow: View {
+/// Eine Zeile je Entnahme.
+private struct ConsumptionRow: View {
+    @ObservedObject var event: ConsumptionEvent
     @ObservedObject var item: Item
 
     var body: some View {
@@ -120,30 +134,45 @@ private struct ArchiveRow: View {
             CategoryIcon(category: item.category, size: 30)
 
             VStack(alignment: .leading, spacing: 3) {
-                Text(item.displayName)
-                    .font(.subheadline.weight(.medium))
-                    .foregroundStyle(Theme.textPrimary)
+                HStack(alignment: .firstTextBaseline, spacing: 8) {
+                    Text(item.displayName)
+                        .font(.subheadline.weight(.medium))
+                        .foregroundStyle(Theme.textPrimary)
+                        .lineLimit(1)
+                    Spacer(minLength: 4)
+                    Text(event.summary(unit: item.unit))
+                        .font(.caption.weight(.semibold))
+                        .monospacedDigit()
+                        .foregroundStyle(Theme.textPrimary)
+                }
+
                 Text(item.category.displayName)
                     .font(.caption)
                     .foregroundStyle(Theme.textSecondary)
+
                 HStack(spacing: 6) {
-                    Text(item.closedAt ?? Date(), style: .date)
+                    Text(event.eventDate, style: .date)
                     Text("·")
-                    Text("\(StatisticsBuilder.storageDays(from: item.frozenDate, to: item.closedAt ?? Date())) Tage gelagert")
+                    Text("nach \(storageDays) Tagen")
                 }
                 .font(.caption2)
                 .foregroundStyle(Theme.textTertiary)
 
                 HStack(spacing: 6) {
                     BadgeView(
-                        text: item.closeReason?.displayName ?? "Abgeschlossen",
-                        color: item.closeReason == .discarded ? Theme.stateExpired : Theme.stateFine,
-                        systemImage: item.closeReason?.symbolName
+                        text: event.kind.displayName,
+                        color: event.kind == .discarded ? Theme.stateExpired : Theme.stateFine,
+                        systemImage: event.kind.symbolName
                     )
-                    // Ein Eintrag kann beides sein: teilweise gegessen, Rest entsorgt.
-                    // Das steht hier, damit die Plakette oben nicht die halbe Wahrheit erzaehlt.
-                    if isMixed {
-                        BadgeView(text: "teilweise gegessen", color: Theme.textSecondary)
+                    // Das Produkt liegt noch im Tiefkuehler – hier steht nur dieser
+                    // eine entnommene Anteil, nicht der ganze Eintrag.
+                    if !item.isClosed {
+                        BadgeView(text: "noch im Bestand", color: Theme.textSecondary)
+                    }
+                    if !event.byNameText.isEmpty {
+                        Text(event.byNameText)
+                            .font(.caption2)
+                            .foregroundStyle(Theme.textTertiary)
                     }
                 }
                 .padding(.top, 1)
@@ -152,9 +181,8 @@ private struct ArchiveRow: View {
         .accessibilityElement(children: .combine)
     }
 
-    private var isMixed: Bool {
-        let kinds = Set(item.eventList.map(\.kind))
-        return kinds.count > 1
+    private var storageDays: Int {
+        StatisticsBuilder.storageDays(from: item.frozenDate, to: event.eventDate)
     }
 }
 
@@ -185,4 +213,5 @@ enum ArchiveTimeframe: String, CaseIterable, Identifiable {
 #Preview("Archiv") {
     ArchiveView()
         .environment(\.managedObjectContext, PersistenceController.preview.viewContext)
+        .preferredColorScheme(.dark)
 }
