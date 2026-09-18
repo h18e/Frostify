@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!--
+		Nur die Schlüssel, die Xcode nicht selber generiert.
+		Alles Übrige (CFBundleName, Version, Szenen-Manifest, Kamera-Text …)
+		kommt aus GENERATE_INFOPLIST_FILE = YES und den INFOPLIST_KEY_*-Einstellungen.
+
+		Warum überhaupt eine eigene Datei: Für UIBackgroundModes und
+		CKSharingSupported gibt es keine INFOPLIST_KEY_*-Entsprechung. Wer das
+		trotzdem als Build-Einstellung schreibt, bekommt keinen Fehler – der
+		Schlüssel fehlt am Ende einfach in der App.
+	-->
+
+	<!-- Pflicht, damit die App eingehende iCloud-Freigabe-Einladungen annehmen darf.
+	     Ohne diesen Schlüssel ruft iOS `userDidAcceptCloudKitShareWith` nie auf,
+	     und der Einladungslink läuft ins Leere – ohne jede Fehlermeldung. -->
+	<key>CKSharingSupported</key>
+	<true/>
+
+	<!-- CloudKit meldet Änderungen des Partnergeräts über stille Push-Nachrichten;
+	     dafür braucht die App den Hintergrundmodus "remote-notification". -->
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
+
+	<!-- Dark Mode ist das einzige Erscheinungsbild der App. Hier statt als
+	     Build-Einstellung, damit es genau eine Quelle dafür gibt. -->
+	<key>UIUserInterfaceStyle</key>
+	<string>Dark</string>
+
+	<!--
+		Export-Compliance: Frostify verwendet ausschliesslich die Verschlüsselung,
+		die Apple selbst mitbringt (CloudKit-Transport). Damit gilt sie als
+		ausgenommen; ohne diesen Schlüssel fragt App Store Connect bei jedem
+		Build danach.
+	-->
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+</dict>
+</plist>

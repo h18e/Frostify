@@ -21,6 +21,7 @@
 		1A0000000000000000000011 /* FrostifyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FrostifyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A000000000000000000001B /* Signing.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Signing.xcconfig; sourceTree = "<group>"; };
 		1A000000000000000000001D /* Frostify.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Frostify.entitlements; sourceTree = "<group>"; };
+		1A000000000000000000001E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -78,6 +79,7 @@
 			children = (
 				1A000000000000000000001B /* Signing.xcconfig */,
 				1A000000000000000000001D /* Frostify.entitlements */,
+				1A000000000000000000001E /* Info.plist */,
 			);
 			path = Config;
 			sourceTree = "<group>";
@@ -285,11 +287,10 @@
 				DEVELOPMENT_TEAM = "$(FROSTIFY_DEVELOPMENT_TEAM)";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Config/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Frostify;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Frostify braucht die Kamera nur, um Barcodes von Tiefkuehlprodukten zu scannen. Es werden keine Bilder gespeichert.";
-				INFOPLIST_KEY_UIBackgroundModes = "remote-notification";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -319,11 +320,10 @@
 				DEVELOPMENT_TEAM = "$(FROSTIFY_DEVELOPMENT_TEAM)";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Config/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Frostify;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Frostify braucht die Kamera nur, um Barcodes von Tiefkuehlprodukten zu scannen. Es werden keine Bilder gespeichert.";
-				INFOPLIST_KEY_UIBackgroundModes = "remote-notification";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (

@@ -18,17 +18,32 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         return true
     }
 
+    /// Haengt den `SceneDelegate` an die Szene, die iOS gleich aufbaut.
+    ///
+    /// Uebernommen wird die Konfiguration, die iOS aus dem Szenen-Manifest bereits
+    /// ermittelt hat – geaendert wird nur die Delegate-Klasse. Wuerde man hier eine
+    /// frische `UISceneConfiguration` bauen, ginge die Szenen-Klasse verloren, die
+    /// SwiftUI fuer seine Fenster braucht.
     func application(
         _ application: UIApplication,
         configurationForConnecting connectingSceneSession: UISceneSession,
         options: UIScene.ConnectionOptions
     ) -> UISceneConfiguration {
-        let configuration = UISceneConfiguration(
-            name: nil,
-            sessionRole: connectingSceneSession.role
-        )
+        let configuration = connectingSceneSession.configuration
         configuration.delegateClass = SceneDelegate.self
         return configuration
+    }
+
+    /// Rueckfall fuer den Fall, dass die App ohne Szenen laeuft.
+    ///
+    /// Bei einer SwiftUI-App mit `WindowGroup` greift dieser Weg nie – der
+    /// Szenen-Weg unten ist der richtige. Er steht trotzdem hier, weil er nichts
+    /// kostet und die Einladung sonst im Ausnahmefall stumm verpuffen wuerde.
+    func application(
+        _ application: UIApplication,
+        userDidAcceptCloudKitShareWith cloudKitShareMetadata: CKShare.Metadata
+    ) {
+        ShareAcceptance.accept(cloudKitShareMetadata)
     }
 
     func application(

@@ -12,6 +12,9 @@ eines Xcode-Projekts ohne macOS am wahrscheinlichsten sind:
   5. Abgleich Modell <-> @NSManaged-Eigenschaften der NSManagedObject-Subklassen
   6. Key-Paths in @FetchRequest verweisen auf existierende Attribute
   7. Dateien, auf die Build-Einstellungen zeigen, existieren tatsaechlich
+  8. Info.plist: Schluessel, die zur Laufzeit gebraucht werden, sind vorhanden –
+     und keiner davon wird als INFOPLIST_KEY_* geschrieben, wo Xcode ihn
+     stillschweigend verwirft
 
 Aufruf:  python3 tools/verify_structure.py
 """
@@ -260,6 +263,70 @@ def check_referenced_build_files() -> None:
     ok("Von Build-Einstellungen referenzierte Dateien vorhanden")
 
 
+# ------------------------------------------------------------------- Info.plist
+
+# Diese Schluessel kennt die automatische Info.plist-Erzeugung NICHT. Wer sie als
+# INFOPLIST_KEY_* setzt, bekommt keinen Fehler – der Schluessel fehlt am Ende
+# einfach in der App. Genau so ging der Hintergrundmodus fuer CloudKit verloren.
+KEYS_REQUIRING_REAL_PLIST = [
+    "UIBackgroundModes",
+    "CKSharingSupported",
+    "ITSAppUsesNonExemptEncryption",
+    "NSAppTransportSecurity",
+    "UIApplicationShortcutItems",
+]
+
+# Was Frostify zur Laufzeit tatsaechlich braucht.
+REQUIRED_PLIST_KEYS = {
+    "CKSharingSupported": "ohne diesen Schluessel ruft iOS userDidAcceptCloudKitShareWith nie auf",
+    "UIBackgroundModes": "ohne 'remote-notification' meldet CloudKit keine Aenderungen des Partnergeraets",
+    "UIUserInterfaceStyle": "Dark Mode ist das einzige Erscheinungsbild",
+}
+
+
+def check_info_plist() -> None:
+    plist_path = ROOT / "Config" / "Info.plist"
+    pbx = (ROOT / "Frostify.xcodeproj" / "project.pbxproj").read_text(encoding="utf-8")
+
+    if not plist_path.exists():
+        problem("Config/Info.plist fehlt.")
+        return
+
+    try:
+        document = xml.dom.minidom.parse(str(plist_path))
+    except Exception as error:  # noqa: BLE001
+        problem(f"Config/Info.plist ist nicht wohlgeformt – {error}")
+        return
+
+    keys = {node.firstChild.data for node in document.getElementsByTagName("key") if node.firstChild}
+
+    for key, why in REQUIRED_PLIST_KEYS.items():
+        if key not in keys:
+            problem(f"Config/Info.plist: '{key}' fehlt – {why}.")
+
+    if "UIBackgroundModes" in keys and "remote-notification" not in plist_path.read_text(encoding="utf-8"):
+        problem("Config/Info.plist: UIBackgroundModes enthaelt 'remote-notification' nicht.")
+
+    for key in KEYS_REQUIRING_REAL_PLIST:
+        if f"INFOPLIST_KEY_{key}" in pbx:
+            problem(
+                f"project.pbxproj: INFOPLIST_KEY_{key} wird von Xcode nicht ausgewertet – "
+                "dieser Schluessel gehoert in Config/Info.plist."
+            )
+
+    if "INFOPLIST_FILE = Config/Info.plist;" not in pbx:
+        problem("project.pbxproj: INFOPLIST_FILE zeigt nicht auf Config/Info.plist.")
+    elif pbx.count("INFOPLIST_FILE = Config/Info.plist;") < 2:
+        problem("project.pbxproj: INFOPLIST_FILE fehlt in einer der beiden Build-Konfigurationen.")
+
+    entitlements = (ROOT / "Config" / "Frostify.entitlements").read_text(encoding="utf-8")
+    for key in ("aps-environment", "com.apple.developer.icloud-services"):
+        if key not in entitlements:
+            problem(f"Config/Frostify.entitlements: '{key}' fehlt.")
+
+    ok("Info.plist und Entitlements enthalten die Laufzeit-Schluessel")
+
+
 # ------------------------------------------------------------------- Core Data
 
 def load_model() -> dict[str, dict]:
@@ -408,6 +475,7 @@ def main() -> int:
     check_xml_and_json()
     check_pbxproj()
     check_referenced_build_files()
+    check_info_plist()
     entities = load_model()
     check_model_integrity(entities)
     check_managed_properties(entities)

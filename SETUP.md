@@ -243,6 +243,10 @@ inklusive der Zeile mit `Thread 1:` oder `Fatal error:`.
 | `An App ID with identifier ... is not available` | Bundle Identifier ist vergeben. In `project.pbxproj` beide Vorkommen von `ch.hebera.frostify` auf etwas Eigenes ändern, ebenso den iCloud-Container |
 | `CloudKit integration requires does not support unique constraints` | Am Modell wurde eine Eindeutigkeitsregel gesetzt – Frostify benutzt bewusst keine |
 | Nichts gleicht ab | Beide Geräte bei iCloud angemeldet? Netz da? Schema aus Schritt 7 angelegt? |
+| `Unable to initialize without an iCloud account (CKAccountStatusNoAccount)` | **Kein Fehler der App.** Der Simulator ist nicht bei iCloud angemeldet. Die App läuft lokal normal weiter. Zum Testen: im Simulator **Einstellungen → Beim iPhone anmelden**, oder gleich auf dem echten Gerät testen |
+| `BUG IN CLIENT OF CLOUDKIT: … require the 'remote-notification' background mode` | Der Schlüssel fehlt in der Info.plist. Muss in `Config/Info.plist` stehen – als `INFOPLIST_KEY_*`-Build-Einstellung wird er stillschweigend verworfen |
+| `hapticpatternlibrary.plist konnte nicht geöffnet werden` | Simulator-Rauschen der Tastatur, hat mit Frostify nichts zu tun. Auf einem echten Gerät tritt es nicht auf |
+| `Could not validate account info cache` | Begleitmeldung zu fehlender iCloud-Anmeldung, unkritisch |
 | Freigabe-Link öffnet die App nicht | App muss auf dem Zielgerät installiert sein, bevor der Link angetippt wird |
 | `The file "Frostify.xcodeproj" couldn't be opened` | Xcode zu alt – es braucht Xcode 26 oder neuer |
 
