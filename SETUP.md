@@ -245,6 +245,7 @@ inklusive der Zeile mit `Thread 1:` oder `Fatal error:`.
 | Nichts gleicht ab | Beide Geräte bei iCloud angemeldet? Netz da? Schema aus Schritt 7 angelegt? |
 | `Unable to initialize without an iCloud account (CKAccountStatusNoAccount)` | **Kein Fehler der App.** Der Simulator ist nicht bei iCloud angemeldet. Die App läuft lokal normal weiter. Zum Testen: im Simulator **Einstellungen → Beim iPhone anmelden**, oder gleich auf dem echten Gerät testen |
 | `BUG IN CLIENT OF CLOUDKIT: … require the 'remote-notification' background mode` | Der Schlüssel fehlt in der Info.plist. Muss in `Config/Info.plist` stehen – als `INFOPLIST_KEY_*`-Build-Einstellung wird er stillschweigend verworfen |
+| Im Simulator lässt sich nichts eintippen (kein Text, keine Mengen) | **Keine App-Frage.** Die Bildschirmtastatur des Simulators ist abgeschaltet: **I/O → Keyboard → Toggle Software Keyboard** (⌘K). Hilft das nicht, zusätzlich **Connect Hardware Keyboard** (⇧⌘K) aus- und einschalten. Die Einstellung springt gelegentlich von selbst um |
 | `hapticpatternlibrary.plist konnte nicht geöffnet werden` | Simulator-Rauschen der Tastatur, hat mit Frostify nichts zu tun. Auf einem echten Gerät tritt es nicht auf |
 | `Could not validate account info cache` | Begleitmeldung zu fehlender iCloud-Anmeldung, unkritisch |
 | Freigabe-Link öffnet die App nicht | App muss auf dem Zielgerät installiert sein, bevor der Link angetippt wird |
