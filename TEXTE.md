@@ -185,7 +185,7 @@ Wenn dir öppis nid passt: säg mer d Zile, i ändere's.
 - Zile 168: **Wäggschmisse**
 - Zile 175: **Abgschlosse**
 - Zile 184: **Zrügghole**
-- Zile 187: **Zrügghole nimmt di letscht Usenahm zrügg u hout dr Iitrag i Vorrat.**
+- Zile 187: **Zrügghole nimmt dr letscht Verbruch zrügg u hout dr Iitrag i Vorrat.**
 
 ## Erfasse & Bearbeite
 
@@ -239,8 +239,8 @@ Wenn dir öppis nid passt: säg mer d Zile, i ändere's.
 - Zile 77: **Wäggschmisse**
 - Zile 81: **Zitruum**
 - Zile 87: **Nume ufbruchti Produkt**
-- Zile 93: **Kei Usenahme i dere Uswau.**
-- Zile 123: **1 Usenahm**
+- Zile 93: **Kei Verbrüch i dere Uswau.**
+- Zile 123: **1 Verbruch**
 - Zile 156: **nach \(storageDays) Täg**
 - Zile 170: **no im Vorrat**
 - Zile 198: **30 Täg**
@@ -251,11 +251,11 @@ Wenn dir öppis nid passt: säg mer d Zile, i ändere's.
 
 `Features/Archive/StatisticsView.swift`
 
-- Zile 59: **No kei Usenahme – d Statistik füut sech, sobaud dir öppis usem Tiefchüeler nämet.**
-- Zile 77: **Usenahme**
+- Zile 59: **No kei Verbrüch – d Statistik füut sech, sobaud dir öppis usem Tiefchüeler nämet.**
+- Zile 77: **Verbrüch**
 - Zile 82: **Dervo gässe**
 - Zile 87: **Dervo wäggschmisse**
-- Zile 93: **Ø Lagerdüür**
+- Zile 93: **Ø Lagerduur**
 - Zile 106: **nach Mängi gwichtet**
 - Zile 110: **Total**
 - Zile 112: **D Verlustquote gwichtet nach Mängi: Ei vo zwo Portione zeut aus haube Iitrag. So si Gramm, Stück u Sack vergliechbar.**
@@ -283,7 +283,7 @@ Wenn dir öppis nid passt: säg mer d Zile, i ändere's.
 `Features/Settings/SettingsView.swift`
 
 - Zile 14: **Dy Name**
-- Zile 19: **Wird a de erfasste Iiträg u Usenahme vermerkt, damit dir gseht, wär was gmacht het.**
+- Zile 19: **Wird a de erfasste Iiträg u Verbrüch vermerkt, damit dir gseht, wär was gmacht het.**
 - Zile 22: **Zäme**
 - Zile 26: **Teile**
 - Zile 31: **Haltbarkeits-Richtwärt**
@@ -313,7 +313,7 @@ Wenn dir öppis nid passt: säg mer d Zile, i ändere's.
 - Zile 114: **Teilnähmer**
 - Zile 128: **Beidi bruuche ne eigeti Apple-ID u ne iCloud-Aamäudig.**
 - Zile 129: **Ohni Netz schaffet Frostify normau wyter u glycht speter ab.**
-- Zile 130: **Glychzytigi Usenahme göh nid verlore – si wärde zämezeut.**
+- Zile 130: **Glychzytigi Verbrüch göh nid verlore – si wärde zämezeut.**
 - Zile 132: **Guet z wüsse**
 - Zile 148: **Bsitzer**
 - Zile 148: **Iiglade Person**

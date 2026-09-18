@@ -56,7 +56,7 @@ struct StatisticsView: View {
         List {
             if stats.eventCount == 0 {
                 Section {
-                    Text("No kei Usenahme – d Statistik füut sech, sobaud dir öppis usem Tiefchüeler nämet.")
+                    Text("No kei Verbrüch – d Statistik füut sech, sobaud dir öppis usem Tiefchüeler nämet.")
                         .font(.subheadline)
                         .foregroundStyle(Theme.textSecondary)
                 }
@@ -74,7 +74,7 @@ struct StatisticsView: View {
 
     private func overallSection(_ stats: InventoryStatistics) -> some View {
         Section {
-            LabeledValueRow(label: "Usenahme") {
+            LabeledValueRow(label: "Verbrüch") {
                 Text("\(stats.eventCount)")
                     .monospacedDigit()
                     .foregroundStyle(Theme.textPrimary)
@@ -90,7 +90,7 @@ struct StatisticsView: View {
                     .foregroundStyle(Theme.stateExpired)
             }
             if let days = stats.averageStorageDays {
-                LabeledValueRow(label: "Ø Lagerdüür") {
+                LabeledValueRow(label: "Ø Lagerduur") {
                     Text("\(days) Täg")
                         .monospacedDigit()
                         .foregroundStyle(Theme.textPrimary)
@@ -140,7 +140,7 @@ struct StatisticsView: View {
     }
 
     private func secondaryText(_ entry: CategoryStatistics) -> String {
-        var parts = ["\(entry.discardedCount) vo \(entry.eventCount) Usenahme"]
+        var parts = ["\(entry.discardedCount) vo \(entry.eventCount) Verbrüch"]
         if let days = entry.averageStorageDays {
             parts.append("Ø \(days) T")
         }

@@ -127,7 +127,7 @@ struct SharingView: View {
         Section {
             Label("Beidi bruuche ne eigeti Apple-ID u ne iCloud-Aamäudig.", systemImage: "person.2")
             Label("Ohni Netz schaffet Frostify normau wyter u glycht speter ab.", systemImage: "wifi.slash")
-            Label("Glychzytigi Usenahme göh nid verlore – si wärde zämezeut.", systemImage: "arrow.triangle.merge")
+            Label("Glychzytigi Verbrüch göh nid verlore – si wärde zämezeut.", systemImage: "arrow.triangle.merge")
         } header: {
             Text("Guet z wüsse")
         }

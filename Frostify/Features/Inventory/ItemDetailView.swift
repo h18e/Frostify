@@ -184,7 +184,7 @@ struct ItemDetailView: View {
                 Label("Zrügghole", systemImage: "arrow.uturn.backward")
             }
         } footer: {
-            Text("Zrügghole nimmt di letscht Usenahm zrügg u hout dr Iitrag i Vorrat.")
+            Text("Zrügghole nimmt dr letscht Verbruch zrügg u hout dr Iitrag i Vorrat.")
         }
     }
 }

@@ -16,7 +16,7 @@ struct SettingsView: View {
                 } header: {
                     Text("Name")
                 } footer: {
-                    Text("Wird a de erfasste Iiträg u Usenahme vermerkt, damit dir gseht, wär was gmacht het.")
+                    Text("Wird a de erfasste Iiträg u Verbrüch vermerkt, damit dir gseht, wär was gmacht het.")
                 }
 
                 Section("Zäme") {

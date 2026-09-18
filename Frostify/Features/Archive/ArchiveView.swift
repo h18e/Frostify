@@ -90,7 +90,7 @@ struct ArchiveView: View {
 
             if filtered.isEmpty {
                 Section {
-                    Text("Kei Usenahme i dere Uswau.")
+                    Text("Kei Verbrüch i dere Uswau.")
                         .font(.subheadline)
                         .foregroundStyle(Theme.textSecondary)
                 }
@@ -120,7 +120,7 @@ struct ArchiveView: View {
     }
 
     private var headerText: String {
-        filtered.count == 1 ? "1 Usenahm" : "\(filtered.count) Usenahme"
+        filtered.count == 1 ? "1 Verbruch" : "\(filtered.count) Verbrüch"
     }
 }
 
