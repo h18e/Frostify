@@ -283,6 +283,12 @@ git checkout -- Frostify.xcodeproj/project.pbxproj
 git pull
 ```
 
+**Der String Catalog** (`Frostify/Resources/Localizable.xcstrings`) ist aus dem Git
+genommen und in `.gitignore` eingetragen: Xcode füllt ihn bei jedem Bauen neu, er
+würde also dauerhaft Konflikte erzeugen. Falls er bei dir noch auf der Platte liegt
+und als geändert auftaucht, kannst du ihn gefahrlos löschen – die App ist
+einsprachig, die deutschen Texte stehen im Code.
+
 **Wenn es sich wiederholt:** Dann weicht die Fassung im Git noch von der ab, die
 dein Xcode schreibt. In dem Fall committest du Xcodes Fassung einmalig selbst –
 danach ist Ruhe, weil Xcode dann nichts mehr zu ändern findet:

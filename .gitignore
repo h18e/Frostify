@@ -16,6 +16,15 @@ DerivedData/
 # Bewusst NICHT im Git: sonst kollidiert jeder "git pull" mit lokalen Aenderungen.
 Config/Signing.local.xcconfig
 
+# String Catalog: Xcode fuellt diese Datei bei jedem Bauen mit den aus dem Code
+# gezogenen Texten. Sie ist damit eine abgeleitete Datei und wuerde bei jedem
+# "git pull" kollidieren. Frostify ist einsprachig, die deutschen Texte stehen
+# direkt im Swift-Code – im Katalog steht nichts, was nicht daraus entstuende.
+#
+# Sobald eine zweite Sprache dazukommt, enthaelt er echte Uebersetzungen: dann
+# diese Zeile entfernen und die Datei wieder ins Git aufnehmen.
+Frostify/Resources/Localizable.xcstrings
+
 # Swift Package Manager
 .swiftpm/
 .build/

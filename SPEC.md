@@ -312,8 +312,10 @@ Frostify/
   VoiceOver-Beschriftungen. Farb- und Flächensystem aus Räpplispauter übernommen
   (`Theme.swift`, `Components.swift`); Akzentfarbe ist das Türkis aus dessen
   Kategorienpalette, damit Grün der Ampelstufe „in Ordnung" vorbehalten bleibt.
-- App-Sprache: **Hochdeutsch in Schweizer Schreibweise** (kein ß), Du-Form,
-  von Anfang an über String Catalog lokalisiert.
+- App-Sprache: **Hochdeutsch in Schweizer Schreibweise** (kein ß), Du-Form.
+  Die Texte stehen als Literale im Code und dienen SwiftUI zugleich als
+  Übersetzungsschlüssel. Ein String Catalog liegt nicht im Git, weil Xcode ihn bei
+  jedem Bauen neu schreibt; er kommt dazu, sobald eine zweite Sprache ansteht.
 - Farben nie als einziger Träger einer Information – die Ampel hat immer Symbol und Text.
 
 ### 6.4 iCloud von Anfang an

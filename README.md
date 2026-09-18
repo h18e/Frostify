@@ -32,7 +32,7 @@ Frostify/
 ├── Persistence/    Stores, Repository, CloudKit-Freigabe
 ├── Features/       Bildschirme: Bestand, Erfassen, Entnehmen, Scanner, Archiv, Einstellungen
 ├── Services/       Erinnerungen, lokale Einstellungen
-└── Resources/      Asset-Katalog, String Catalog
+└── Resources/      Asset-Katalog
 ```
 
 ### Schichtenregel
@@ -83,6 +83,18 @@ gemeldeten Regressionen behaftet. `NSPersistentCloudKitContainer` ist derselbe
 Unterbau, für private und geteilte Datenbanken ausgelegt und uneingeschränkt
 verfügbar. Die Persistenz liegt hinter einem Protokoll, ein späterer Wechsel bleibt
 möglich.
+
+## Sprache
+
+Frostify ist einsprachig: Hochdeutsch in Schweizer Schreibweise, die Texte stehen
+als Literale direkt im Swift-Code. SwiftUI benutzt sie als Schlüssel und zeigt sie
+unverändert an, solange es keine Übersetzung gibt.
+
+Ein String Catalog liegt bewusst **nicht** im Git: Xcode füllt ihn bei jedem Bauen
+neu mit den aus dem Code gezogenen Texten, er ist also eine abgeleitete Datei und
+würde bei jedem `git pull` kollidieren. Kommt eine zweite Sprache dazu, enthält er
+echte Übersetzungen – dann wird der Eintrag aus `.gitignore` entfernt und die Datei
+wieder aufgenommen.
 
 ## Prüfen ohne Xcode
 
