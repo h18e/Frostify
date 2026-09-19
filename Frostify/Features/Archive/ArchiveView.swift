@@ -9,6 +9,8 @@ import SwiftUI
 /// deshalb zwei Zeilen. Damit stimmen Archiv und Statistik auch überein – beide
 /// zählen dasselbe.
 struct ArchiveView: View {
+    @Environment(\.inventory) private var inventory
+
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ConsumptionEvent.date, ascending: false)],
         animation: .default
@@ -19,6 +21,11 @@ struct ArchiveView: View {
     @State private var timeframe: ArchiveTimeframe = .lastYear
     @State private var onlyClosed = false
     @State private var searchText = ""
+
+    @State private var rowDeletion: RowDeletion?
+    @State private var showClearOptions = false
+    @State private var clearAllCount = 0
+    @State private var clearOldCount = 0
 
     private var filtered: [ConsumptionEvent] {
         let cutoff = timeframe.cutoffDate
@@ -37,6 +44,12 @@ struct ArchiveView: View {
             }
             return true
         }
+    }
+
+    /// Gibt es überhaupt aufgebrauchte Produkte zum Aufräumen? Aus den bereits
+    /// geladenen Daten abgeleitet, damit dafür keine eigene Abfrage nötig ist.
+    private var hasClosedItems: Bool {
+        events.contains { $0.item?.isClosed == true }
     }
 
     var body: some View {
@@ -64,6 +77,28 @@ struct ArchiveView: View {
                         Label("Statistik", systemImage: "chart.bar")
                     }
                 }
+            }
+            .confirmationDialog(
+                rowDeletion?.isWholeEntry == true ? "Iitrag lösche?" : "Verbruch lösche?",
+                isPresented: Binding(
+                    get: { rowDeletion != nil },
+                    set: { if !$0 { rowDeletion = nil } }
+                ),
+                titleVisibility: .visible
+            ) {
+                Button("Lösche", role: .destructive) {
+                    if let rowDeletion {
+                        if rowDeletion.isWholeEntry {
+                            inventory.delete(rowDeletion.item)
+                        } else {
+                            inventory.deleteEvent(rowDeletion.event)
+                        }
+                    }
+                    rowDeletion = nil
+                }
+                Button("Abbräche", role: .cancel) { rowDeletion = nil }
+            } message: {
+                Text(rowDeletionMessage)
             }
         }
     }
@@ -105,6 +140,16 @@ struct ArchiveView: View {
                         } label: {
                             ConsumptionRow(event: event, item: item)
                         }
+                        .swipeActions(edge: .trailing) {
+                            Button(role: .destructive) {
+                                rowDeletion = RowDeletion(event: event, item: item)
+                            } label: {
+                                // Zwei verschiedene Dinge hinter derselben Geste –
+                                // deshalb sagt die Beschriftung, welches davon gemeint ist.
+                                Label(item.isClosed ? "Iitrag lösche" : "Verbruch lösche",
+                                      systemImage: "trash")
+                            }
+                        }
                     }
                 }
             } header: {
@@ -114,14 +159,73 @@ struct ArchiveView: View {
                     .textCase(nil)
             }
             .listRowBackground(Theme.surface)
+
+            if hasClosedItems {
+                Section {
+                    Button(role: .destructive) {
+                        clearAllCount = inventory.closedItemCount(closedBefore: nil)
+                        clearOldCount = inventory.closedItemCount(closedBefore: Self.oneYearAgo)
+                        showClearOptions = true
+                    } label: {
+                        Label("Archiv leere", systemImage: "trash")
+                    }
+                } footer: {
+                    Text("Löscht ufbruchti Produkt mitsamt ihrem Verlouf. Was no im Vorrat liegt, blibt unberüehrt.")
+                }
+                .listRowBackground(Theme.surface)
+            }
         }
         .listStyle(.insetGrouped)
         .themedList()
+        // Bewusst hier an der Liste und nicht zuoberst: Zwei Bestaetigungsdialoge
+        // an derselben View kommen sich in SwiftUI in die Quere.
+        .confirmationDialog(
+            "Archiv leere?",
+            isPresented: $showClearOptions,
+            titleVisibility: .visible
+        ) {
+            if clearAllCount > 0 {
+                Button("Aues lösche (\(clearAllCount))", role: .destructive) {
+                    inventory.deleteClosedItems(closedBefore: nil)
+                }
+            }
+            if clearOldCount > 0 {
+                Button("Nume, was älter als es Jahr isch (\(clearOldCount))", role: .destructive) {
+                    inventory.deleteClosedItems(closedBefore: Self.oneYearAgo)
+                }
+            }
+            Button("Abbräche", role: .cancel) {}
+        } message: {
+            Text("Es wärde nume ufbruchti Produkt glöscht, mitsamt ihrem Verlouf. Was no im Vorrat liegt, blibt. D Statistik verliert die Zahle, u dyni Partnerin gseht d Löschig ou.")
+        }
     }
 
     private var headerText: String {
         filtered.count == 1 ? "1 Verbruch" : "\(filtered.count) Verbrüch"
     }
+
+    private var rowDeletionMessage: String {
+        guard let rowDeletion else { return "" }
+        if rowDeletion.isWholeEntry {
+            return "„\(rowDeletion.item.displayName)“ wird mitsamt em ganze Verlouf glöscht. Dyni Partnerin gseht das ou."
+        }
+        return "Die Mängi chunnt zrügg i Vorrat, wüu ds Produkt no da isch. Dyni Partnerin gseht das ou."
+    }
+
+    private static var oneYearAgo: Date {
+        Calendar.current.date(byAdding: .year, value: -1, to: Date()) ?? Date()
+    }
+}
+
+/// Was eine Wischgeste löschen soll.
+///
+/// Bei einem aufgebrauchten Produkt der ganze Eintrag, sonst nur diese eine
+/// Entnahme – dort käme die Menge zurück in den Vorrat.
+private struct RowDeletion {
+    let event: ConsumptionEvent
+    let item: Item
+
+    var isWholeEntry: Bool { item.isClosed }
 }
 
 /// Eine Zeile je Entnahme.

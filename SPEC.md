@@ -179,6 +179,11 @@ Fest verdrahtete Liste (als Swift-Enum), Richtwert je Kategorie in `FreezerSetti
   einer Zeile unter „Gegessen" und einer unter „Weggeworfen". Filterbar nach Grund,
   Zeitraum und Text; ein Schalter blendet Produkte aus, die noch im Bestand liegen.
   Wiederherstellen eines Eintrags ist in der Detailansicht möglich (Fehlbedienung).
+- Archiv aufräumen: **„Archiv leere"** löscht aufgebrauchte Einträge mitsamt Verlauf,
+  wahlweise alle oder nur die älter als ein Jahr. Einträge, die noch im Vorrat
+  liegen, bleiben unberührt. Einzelne Zeilen lassen sich wegwischen: bei einem
+  aufgebrauchten Produkt der ganze Eintrag, sonst nur diese eine Entnahme – dort
+  kommt die Menge zurück in den Vorrat. Gelöscht wird über CloudKit bei beiden.
 - Statistik: gezählt werden **einzelne Entnahmen**, nicht abgeschlossene Einträge.
   Jede Entnahme trägt ihren Anteil am Eintrag (200 g von 400 g = 0,5), wodurch
   Gramm, Stück und Beutel vergleichbar werden. Angezeigt werden Anzahl gegessener

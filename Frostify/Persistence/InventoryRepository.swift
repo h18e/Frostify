@@ -24,6 +24,11 @@ protocol InventoryRepositoryProtocol: AnyObject {
     func reopen(_ item: Item)
     func deleteEvent(_ event: ConsumptionEvent)
 
+    /// Anzahl abgeschlossener Eintraege, optional nur die aelteren als `date`.
+    func closedItemCount(closedBefore date: Date?) -> Int
+    /// Loescht abgeschlossene Eintraege samt Verlauf.
+    @discardableResult func deleteClosedItems(closedBefore date: Date?) -> Int
+
     func catalogProduct(forBarcode barcode: String) -> CatalogProduct?
     func storageLocationSuggestions() -> [String]
 
@@ -206,6 +211,38 @@ final class InventoryRepository: InventoryRepositoryProtocol {
         // Statistik als Verlust, auch wenn vorher schon Portionen gegessen wurden.
         let hadDiscard = item.eventList.contains { $0.kind == .discarded }
         item.closeReason = (kind == .discarded || hadDiscard) ? .discarded : .consumed
+    }
+
+    // MARK: - Archiv aufraeumen
+
+    /// Abgeschlossene Eintraege, optional nur die aelteren als `date`.
+    private func closedItems(closedBefore date: Date?) -> [Item] {
+        let request = Item.fetchRequest()
+        if let date {
+            request.predicate = NSPredicate(format: "closedAt != nil AND closedAt < %@", date as NSDate)
+        } else {
+            request.predicate = NSPredicate(format: "closedAt != nil")
+        }
+        return (try? context.fetch(request)) ?? []
+    }
+
+    func closedItemCount(closedBefore date: Date?) -> Int {
+        closedItems(closedBefore: date).count
+    }
+
+    /// Loescht abgeschlossene Eintraege mitsamt ihren Entnahmen.
+    ///
+    /// Eintraege, die noch im Vorrat liegen, bleiben unberuehrt – auch wenn von
+    /// ihnen schon Entnahmen im Archiv stehen. Wuerde man die loeschen, kaeme die
+    /// entnommene Menge wieder zum Bestand dazu.
+    @discardableResult
+    func deleteClosedItems(closedBefore date: Date?) -> Int {
+        let items = closedItems(closedBefore: date)
+        for item in items {
+            context.delete(item)
+        }
+        save()
+        return items.count
     }
 
     // MARK: - Katalog

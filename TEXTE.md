@@ -233,21 +233,35 @@ Wenn dir öppis nid passt: säg mer d Zile, i ändere's.
 
 `Features/Archive/ArchiveView.swift`
 
-- Zile 48: **No nüt usegnoh**
-- Zile 49: **Sobaud du öppis usem Tiefchüeler nimmsch oder wägschmeisst, erschint's da.**
-- Zile 58: **Name oder Kategorie**
-- Zile 75: **Aui**
-- Zile 76: **Gässe**
-- Zile 77: **Wäggschmisse**
-- Zile 81: **Zitruum**
-- Zile 87: **Nume ufbruchti Produkt**
-- Zile 93: **Kei Verbrüch i dere Uswau.**
-- Zile 123: **1 Verbruch**
-- Zile 156: **nach \(storageDays) Täg**
-- Zile 170: **no im Vorrat**
-- Zile 198: **30 Täg**
-- Zile 199: **12 Mönet**
-- Zile 200: **Aues**
+- Zile 61: **No nüt usegnoh**
+- Zile 62: **Sobaud du öppis usem Tiefchüeler nimmsch oder wägschmeisst, erschint's da.**
+- Zile 71: **Name oder Kategorie**
+- Zile 82: **Iitrag lösche?**
+- Zile 82: **Verbruch lösche?**
+- Zile 89: **Lösche**
+- Zile 99: **Abbräche**
+- Zile 110: **Aui**
+- Zile 111: **Gässe**
+- Zile 112: **Wäggschmisse**
+- Zile 116: **Zitruum**
+- Zile 122: **Nume ufbruchti Produkt**
+- Zile 128: **Kei Verbrüch i dere Uswau.**
+- Zile 149: **Iitrag lösche**
+- Zile 149: **Verbruch lösche**
+- Zile 170: **Archiv leere**
+- Zile 173: **Löscht ufbruchti Produkt mitsamt ihrem Verlouf. Was no im Vorrat liegt, blibt unberüehrt.**
+- Zile 183: **Archiv leere?**
+- Zile 188: **Aues lösche (\(clearAllCount))**
+- Zile 193: **Nume, was älter als es Jahr isch (\(clearOldCount))**
+- Zile 199: **Es wärde nume ufbruchti Produkt glöscht, mitsamt ihrem Verlouf. Was no im Vorrat liegt, blibt. D Statistik verliert die Zahle, u dyni Partnerin gseht d Löschig ou.**
+- Zile 204: **1 Verbruch**
+- Zile 210: **„\(rowDeletion.item.displayName)“ wird mitsamt em ganze Verlouf glöscht. Dyni Partnerin gseht das ou.**
+- Zile 212: **Die Mängi chunnt zrügg i Vorrat, wüu ds Produkt no da isch. Dyni Partnerin gseht das ou.**
+- Zile 260: **nach \(storageDays) Täg**
+- Zile 274: **no im Vorrat**
+- Zile 302: **30 Täg**
+- Zile 303: **12 Mönet**
+- Zile 304: **Aues**
 
 ## Statistik
 
@@ -374,7 +388,7 @@ Wenn dir öppis nid passt: säg mer d Zile, i ändere's.
 
 ---
 
-**245 Täxt total.**
+**259 Täxt total.**
 
 Nid uf Mundart, mit Absicht: dr Bereich „Entwicklung" i de Istellige (nume i
 Debug-Builds sichtbar), Log-Mäudige und d Kommentär im Code. Die si für
