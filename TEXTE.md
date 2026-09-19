@@ -117,26 +117,27 @@ Wenn dir öppis nid passt: säg mer d Zile, i ändere's.
 
 `Features/Inventory/InventoryListView.swift`
 
-- Zile 56: **Dr Tiefchüeler isch läär**
-- Zile 57: **Erfass dys erschte Produkt übers Plus obe rächts.**
-- Zile 58: **Produkt erfasse**
-- Zile 67: **Vorrat**
-- Zile 68: **Name, Bemerkig oder Lagerort**
-- Zile 90: **Iitrag würklech lösche?**
-- Zile 97: **Lösche**
-- Zile 101: **Abbräche**
-- Zile 103: **Lösche nimmt dr Iitrag mitsamt em Verlouf wäg. Wenn du ne ufbrucht hesch, nimm statt däm „Aues usenäh“ – de blibt er im Archiv.**
-- Zile 119: **Gruppiere**
-- Zile 133: **Kei Träffer für „\(searchText)“.**
-- Zile 134: **Kei Produkt i dere Ampustufe.**
-- Zile 154: **Usenäh**
-- Zile 167: **Bearbeite**
-- Zile 195: **Sortiere nach**
-- Zile 201: **Filter ufhebe**
-- Zile 206: **Sortierig**
-- Zile 212: **Vo Hand erfasse**
-- Zile 215: **Barcode scanne**
-- Zile 219: **Erfasse**
+- Zile 57: **Dr Tiefchüeler isch läär**
+- Zile 58: **Erfass dys erschte Produkt übers Plus obe rächts.**
+- Zile 59: **Produkt erfasse**
+- Zile 73: **Vorrat**
+- Zile 74: **Name, Bemerkig oder Lagerort**
+- Zile 96: **Iitrag würklech lösche?**
+- Zile 103: **Lösche**
+- Zile 107: **Abbräche**
+- Zile 109: **Lösche nimmt dr Iitrag mitsamt em Verlouf wäg. Wenn du ne ufbrucht hesch, nimm statt däm „Aues usenäh“ – de blibt er im Archiv.**
+- Zile 125: **Gruppiere**
+- Zile 139: **Kei Träffer für „\(searchText)“.**
+- Zile 140: **Kei Produkt i dere Ampustufe.**
+- Zile 160: **Usenäh**
+- Zile 173: **Bearbeite**
+- Zile 201: **Sortiere nach**
+- Zile 207: **Filter ufhebe**
+- Zile 212: **Sortierig**
+- Zile 218: **Vo Hand erfasse**
+- Zile 221: **Barcode scanne**
+- Zile 225: **Erfasse**
+- Zile 283: **Suech ds Produkt …**
 
 ## Vorrat – Zämefassig obe
 
@@ -193,26 +194,32 @@ Wenn dir öppis nid passt: säg mer d Zile, i ändere's.
 
 `Features/ItemEditor/ItemEditorView.swift`
 
-- Zile 49: **Iitrag bearbeite**
-- Zile 49: **Nöie Iitrag**
-- Zile 53: **Abbräche**
-- Zile 56: **Sichere**
-- Zile 82: **Nöie Barcode**
-- Zile 84: **Frostify kennt dä Code no nid. Gib em eimau e Name u d Mängi – bim nächschte Scan isch de aues scho usgfüut.**
-- Zile 116: **Bemerkig**
-- Zile 124: **Mängi**
-- Zile 141: **Portione**
-- Zile 143: **kei Angab**
-- Zile 150: **Bispiu: 400 g Rindsteak, 2 Portione, Bemerkig „2 Steaks im Sack“. Bim Usenäh rächnet d App zwüsche Mängi u Portione um.**
-- Zile 156: **Igfrore am**
-- Zile 161: **Empfohle bis**
-- Zile 164: **Uf Richtwärt zrügsetze**
-- Zile 174: **Vo Hand gsetzt – dr Richtwärt vo dr Kategorie wird nüm aagwändet.**
-- Zile 175: **Richtwärt für \(draft.category.displayName): \(table.months(for: draft.category)) Mönet.**
-- Zile 181: **z. B. Schublade 2**
-- Zile 202: **Hauft bim Finde, ohni dr ganz Tiefchüeler uszrume.**
-- Zile 212: **Wägnäh**
-- Zile 220: **Bim Sichere merkt sech Frostify Name, Kategorie, Einheit u Mängi zu däm Code. Bim nächschte Scan isch aues scho usgfüut.**
+- Zile 45: **Iitrag bearbeite**
+- Zile 45: **Nöie Iitrag**
+- Zile 49: **Abbräche**
+- Zile 52: **Sichere**
+- Zile 79: **Us dym Katalog**
+- Zile 80: **Dä Code hesch scho einisch erfasst. Prüef nume no Mängi u Datum.**
+- Zile 85: **Vorschlag vo Open Food Facts**
+- Zile 86: **Prüef Name, Mängi u Kategorie – die Date chöi ungenau si. Was du sicherisch, chunnt i dy persönlech Katalog.**
+- Zile 91: **Nöie Barcode**
+- Zile 92: **Weder dy Katalog no Open Food Facts kennt dä Code. Gib em eimau e Name u d Mängi – bim nächschte Scan isch aues scho usgfüut.**
+- Zile 97: **Kes Netz**
+- Zile 98: **Open Food Facts isch grad nid erreichbar. Gib d Date vo Hand i – si chöme glych i dy Katalog.**
+- Zile 141: **Bemerkig**
+- Zile 149: **Mängi**
+- Zile 166: **Portione**
+- Zile 168: **kei Angab**
+- Zile 175: **Bispiu: 400 g Rindsteak, 2 Portione, Bemerkig „2 Steaks im Sack“. Bim Usenäh rächnet d App zwüsche Mängi u Portione um.**
+- Zile 181: **Igfrore am**
+- Zile 186: **Empfohle bis**
+- Zile 189: **Uf Richtwärt zrügsetze**
+- Zile 199: **Vo Hand gsetzt – dr Richtwärt vo dr Kategorie wird nüm aagwändet.**
+- Zile 200: **Richtwärt für \(draft.category.displayName): \(table.months(for: draft.category)) Mönet.**
+- Zile 206: **z. B. Schublade 2**
+- Zile 227: **Hauft bim Finde, ohni dr ganz Tiefchüeler uszrume.**
+- Zile 237: **Wägnäh**
+- Zile 245: **Bim Sichere merkt sech Frostify Name, Kategorie, Einheit u Mängi zu däm Code. Bim nächschte Scan isch aues scho usgfüut.**
 
 ## Usenäh
 
@@ -305,12 +312,14 @@ Wenn dir öppis nid passt: säg mer d Zile, i ändere's.
 - Zile 22: **Zäme**
 - Zile 26: **Teile**
 - Zile 31: **Haltbarkeits-Richtwärt**
-- Zile 35: **Ds Grät**
 - Zile 39: **Erinnerige**
-- Zile 47: **Gruppierig**
-- Zile 55: **Sortierig**
-- Zile 67: **Istellige**
-- Zile 76: **Dyni Date ligge i dym private iCloud-Bereich. Frostify het kei eigete Server.**
+- Zile 43: **Open Food Facts frage**
+- Zile 51: **Gruppierig**
+- Zile 59: **Sortierig**
+- Zile 62: **Ds Grät**
+- Zile 64: **Bim Scanne vo eme unbekannte Barcode frogt Frostify Open Food Facts, e offeni Produktdatebank. Dörthi geit nume dr Barcode. Dy eigete Katalog het immer Vorrang – isch das us, blibt ds Formular bi neue Code eifach läär.**
+- Zile 75: **Istellige**
+- Zile 84: **Dyni Date ligge i dym private iCloud-Bereich. Frostify het kei eigete Server.**
 
 ## Istellige → Teile
 
@@ -390,7 +399,7 @@ Wenn dir öppis nid passt: säg mer d Zile, i ändere's.
 
 ---
 
-**261 Täxt total.**
+**270 Täxt total.**
 
 Nid uf Mundart, mit Absicht: dr Bereich „Entwicklung" i de Istellige (nume i
 Debug-Builds sichtbar), Log-Mäudige und d Kommentär im Code. Die si für

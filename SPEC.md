@@ -17,7 +17,7 @@ nichts landet abgelaufen im Abfall. Die Daten werden mit Raphis Partnerin geteil
 | Entnahme | **Teilentnahme mit Restmenge**; bei Rest 0 automatisch ins Archiv. "Alles entnehmen" mit einem Tipp. |
 | Teilen | **CloudKit Sharing zwischen zwei Apple-IDs** (Einladungslink). |
 | Erinnerungen | **Ja**, lokale Benachrichtigungen bei bald ablaufenden Produkten. |
-| Barcode | **Ja**, mit **eigenem Katalog, offline** – kein externer Dienst. |
+| Barcode | **Ja**, eigener Katalog als erste Quelle; bei unbekanntem Code Rückfall auf Open Food Facts (abschaltbar, überträgt nur den Barcode). |
 | Archiv & Statistik | **Ja**. |
 | Einkaufsliste | **Nicht in v1** (bewusst verschoben). |
 | Mindest-iOS | **iOS 26** – "das Beste, was ab iOS 26 passt". |
@@ -154,9 +154,17 @@ Fest verdrahtete Liste (als Swift-Enum), Richtwert je Kategorie in `FreezerSetti
   Einfrierdatum (Vorgabe: heute), Lagerort, optional Barcode scannen.
 - "empfohlen bis" wird live aus Kategorie + Einfrierdatum berechnet und angezeigt;
   antippen und ändern macht es manuell.
-- Scan-Weg: Kamera → Code bekannt ⇒ Formular ist vorausgefüllt, nur Menge und Datum
-  bestätigen. Code unbekannt ⇒ normales Formular, der Katalogeintrag entsteht beim
-  Speichern automatisch.
+- Scan-Weg, drei Quellen in dieser Reihenfolge:
+  1. **Eigener Katalog** – was ihr einmal erfasst habt, gilt. Ohne Netz, ohne Wartezeit.
+  2. **Open Food Facts**, nur bei unbekanntem Code und nur wenn in den Einstellungen
+     erlaubt. Übertragen wird ausschliesslich der Barcode. Name, Marke, Menge und eine
+     geratene Kategorie füllen das Formular vor.
+  3. **Leeres Formular**, wenn beides nichts hergibt oder kein Netz da ist.
+
+  In jedem Fall gilt: Was beim Sichern im Formular steht – inklusive deiner
+  Korrekturen – landet im eigenen Katalog. Ab dem zweiten Scan desselben Produkts
+  wird nichts mehr gefragt. Der Hinweis zuoberst im Formular sagt jeweils, woher die
+  Angaben stammen.
 - "Nochmals erfassen" an einem bestehenden Eintrag dupliziert ihn mit heutigem Datum.
 
 ### 3.3 Entnehmen

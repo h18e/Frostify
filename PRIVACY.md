@@ -4,7 +4,7 @@
 erreichbaren URL liegen; App Store Connect verlangt das zwingend. Rechtlich geprüft
 ist er nicht.
 
-Stand: 17. September 2026
+Stand: 19. September 2026
 
 ## Verantwortlich
 
@@ -42,6 +42,29 @@ beenden.
 Die Kamera wird ausschliesslich zum Erkennen von Barcodes benutzt. Es werden keine
 Bilder gespeichert und keine Bilddaten übertragen. Die Erkennung läuft auf dem Gerät.
 
+## Abfrage bei Open Food Facts
+
+Scannst du einen Barcode, den dein eigener Katalog noch nicht kennt, fragt Frostify
+die offene Produktdatenbank **Open Food Facts** (`world.openfoodfacts.org`) nach
+diesem Produkt.
+
+- Übertragen wird **ausschliesslich der Barcode**. Keine Namen, keine Mengen, keine
+  Angaben aus deinem Tiefkühler, keine Kennung deines Geräts oder deiner Apple-ID.
+- Die Anfrage läuft über eine verschlüsselte Verbindung (HTTPS). Wie bei jedem
+  Aufruf im Internet sieht der Dienst dabei technisch deine IP-Adresse.
+- Frostify gibt sich mit Name und Version zu erkennen, wie es Open Food Facts von
+  Anwendungen erwartet.
+- Die Antwort wird nur lokal verwendet, um das Erfassungsformular vorauszufüllen.
+  Es wird nichts an Open Food Facts zurückgemeldet oder dort gespeichert.
+- Für ein Produkt geschieht das **höchstens einmal**: Sobald du es gesichert hast,
+  steht es in deinem eigenen Katalog und wird beim nächsten Scan von dort genommen.
+
+Die Abfrage lässt sich in den Einstellungen unter **Ds Grät → Open Food Facts
+frage** abschalten. Dann bleibt das Formular bei unbekannten Codes leer, und es
+verlässt gar nichts das Gerät.
+
+Datenschutzerklärung von Open Food Facts: https://world.openfoodfacts.org/privacy
+
 ## Mitteilungen
 
 Erinnerungen an bald ablaufende Produkte sind lokale Mitteilungen, die dein Gerät
@@ -50,7 +73,9 @@ selbst plant. Dafür verlässt kein Datum dein Gerät.
 ## Keine Weitergabe an Dritte
 
 Frostify enthält keine Werbung, keine Analysedienste, keine Tracker und keine
-Bibliotheken von Drittanbietern. Es findet keine Übermittlung an Dritte statt.
+Bibliotheken von Drittanbietern. Die einzige Verbindung nach aussen ist die oben
+beschriebene Barcode-Abfrage bei Open Food Facts – sie ist abschaltbar und
+überträgt nur den Barcode.
 
 ## Deine Rechte
 

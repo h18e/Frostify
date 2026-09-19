@@ -18,7 +18,7 @@ Person geteilt.
 | Oberfläche | SwiftUI |
 | Daten & Abgleich | Core Data über `NSPersistentCloudKitContainer` |
 | Teilen | CloudKit Sharing zwischen zwei Apple-IDs |
-| Barcode | VisionKit, eigener Katalog, kein externer Dienst |
+| Barcode | VisionKit; eigener Katalog zuerst, Open Food Facts als Rückfall (abschaltbar) |
 | Erinnerungen | Lokale Mitteilungen, kein Server |
 | Gestaltung | Dark Mode als einziges Erscheinungsbild, Theme aus Räpplispauter übernommen |
 | Abhängigkeiten | keine externen Pakete |
@@ -78,6 +78,13 @@ und verlöre die andere Hälfte. Jede Entnahme trägt ihren Anteil am Eintrag
 (200 g von 400 g = 0,5), wodurch Gramm, Stück und Beutel vergleichbar werden.
 Im Archiv wird aus einem solchen Eintrag entsprechend eine Zeile unter „Gegessen"
 und eine unter „Weggeworfen" – beide Ansichten zählen damit dasselbe.
+
+**Der eigene Katalog schlägt die Weltdatenbank.** Beim Scannen wird zuerst der
+eigene Katalog durchsucht, erst dann Open Food Facts gefragt, und nur bei
+unbekannten Codes. Was beim Sichern im Formular steht – inklusive Korrekturen an
+Name, Menge und Kategorie – landet im eigenen Katalog und gilt ab dann. Damit
+braucht das Erfassen eines wiederkehrenden Produkts weder Netz noch Wartezeit, und
+die Angaben sind die euren, nicht die einer fremden Datenbank.
 
 **Core Data statt SwiftData.** Bei der Oberfläche ist das Neueste auch das Beste, bei
 der Persistenz nicht: Das Teilen zwischen zwei Apple-IDs ist der riskanteste Teil des

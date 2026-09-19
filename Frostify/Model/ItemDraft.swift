@@ -1,5 +1,19 @@
 import Foundation
 
+/// Woher die Angaben im Formular stammen. Steuert nur den Hinweis zuoberst –
+/// sichtbar zu machen, warum ein Formular leer oder schon ausgefuellt ist.
+enum DraftOrigin: Equatable {
+    case manual
+    /// Aus dem eigenen Katalog vorausgefuellt.
+    case catalog
+    /// Vorschlag von Open Food Facts.
+    case openFoodFacts
+    /// Gescannt, aber weder im Katalog noch bei Open Food Facts bekannt.
+    case scanUnknown
+    /// Gescannt, aber Open Food Facts war nicht erreichbar.
+    case scanOffline
+}
+
 /// Bearbeitungsstand eines Eintrags im Formular – bewusst ein einfacher Wert, damit
 /// Abbrechen wirklich nichts veraendert und die Vorschau ohne Datenbank funktioniert.
 struct ItemDraft: Equatable {
@@ -14,6 +28,7 @@ struct ItemDraft: Equatable {
     var bestBeforeIsManual: Bool = false
     var storageLocation: String = ""
     var barcode: String?
+    var origin: DraftOrigin = .manual
 
     var isValid: Bool {
         !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && quantity > 0
@@ -49,6 +64,29 @@ struct ItemDraft: Equatable {
         barcode = item.barcodeText
     }
 
+    /// Uebernimmt einen Vorschlag aus einer externen Produktdatenbank.
+    ///
+    /// Menge und Kategorie sind dort oft ungenau oder fehlen ganz – was nicht
+    /// geliefert wird, bleibt auf der Vorgabe, und alles laesst sich im Formular
+    /// aendern. Beim Sichern landet das Ergebnis im eigenen Katalog.
+    init(suggestion: ProductSuggestion, barcode: String, table: ShelfLifeTable) {
+        let category = suggestion.category ?? .other
+        name = suggestion.displayName
+        self.category = category
+        unit = suggestion.unit ?? category.defaultUnit
+        quantity = suggestion.quantity ?? 0
+        portions = 0
+        note = ""
+        frozenAt = Date()
+        bestBefore = ExpiryCalculator.bestBefore(
+            frozenAt: frozenAt,
+            shelfLifeMonths: table.months(for: category)
+        )
+        storageLocation = ""
+        self.barcode = barcode
+        origin = .openFoodFacts
+    }
+
     /// Uebernimmt die Vorschlaege aus dem Barcode-Katalog.
     init(catalog: CatalogProduct, table: ShelfLifeTable) {
         name = catalog.displayName
@@ -63,6 +101,7 @@ struct ItemDraft: Equatable {
             shelfLifeMonths: table.months(for: category)
         )
         barcode = catalog.barcodeText
+        origin = .catalog
     }
 
     /// Zieht das "empfohlen bis"-Datum nach, solange es nicht von Hand gesetzt wurde.

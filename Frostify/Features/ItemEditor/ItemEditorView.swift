@@ -9,8 +9,6 @@ struct ItemEditorView: View {
 
     @State private var draft: ItemDraft
     @State private var locationSuggestions: [String] = []
-    /// Wurde ein Code gescannt, den der Katalog noch nicht kennt?
-    @State private var barcodeIsNew = false
     @FocusState private var nameFocused: Bool
 
     init(target: ItemEditorTarget) {
@@ -33,9 +31,7 @@ struct ItemEditorView: View {
     var body: some View {
         NavigationStack {
             Form {
-                if barcodeIsNew {
-                    newBarcodeHint
-                }
+                originHint
                 productSection
                 quantitySection
                 dateSection
@@ -59,9 +55,6 @@ struct ItemEditorView: View {
             }
             .task {
                 locationSuggestions = inventory.storageLocationSuggestions()
-                if let barcode = draft.barcode, !barcode.isEmpty {
-                    barcodeIsNew = inventory.catalogProduct(forBarcode: barcode) == nil
-                }
                 if case .edit(let item) = target.mode {
                     // Die Richtwerte stehen erst mit dem Repository fest, deshalb hier nachziehen.
                     draft = ItemDraft(item: item, table: table)
@@ -73,20 +66,52 @@ struct ItemEditorView: View {
 
     // MARK: - Abschnitte
 
-    /// Erklaert, warum das Formular nach einem Scan leer ist: Frostify hat keinen
-    /// Produktkatalog aus dem Netz, sondern lernt Codes beim ersten Erfassen.
-    private var newBarcodeHint: some View {
+    /// Sagt zuoberst, woher die Angaben stammen – oder warum keine da sind.
+    /// Ohne das sieht ein Scan, der nichts gefunden hat, aus wie ein Fehler.
+    @ViewBuilder
+    private var originHint: some View {
+        switch draft.origin {
+        case .manual:
+            EmptyView()
+        case .catalog:
+            hint(
+                symbol: "barcode.viewfinder",
+                title: "Us dym Katalog",
+                text: "Dä Code hesch scho einisch erfasst. Prüef nume no Mängi u Datum."
+            )
+        case .openFoodFacts:
+            hint(
+                symbol: "globe",
+                title: "Vorschlag vo Open Food Facts",
+                text: "Prüef Name, Mängi u Kategorie – die Date chöi ungenau si. Was du sicherisch, chunnt i dy persönlech Katalog."
+            )
+        case .scanUnknown:
+            hint(
+                symbol: "barcode.viewfinder",
+                title: "Nöie Barcode",
+                text: "Weder dy Katalog no Open Food Facts kennt dä Code. Gib em eimau e Name u d Mängi – bim nächschte Scan isch aues scho usgfüut."
+            )
+        case .scanOffline:
+            hint(
+                symbol: "wifi.slash",
+                title: "Kes Netz",
+                text: "Open Food Facts isch grad nid erreichbar. Gib d Date vo Hand i – si chöme glych i dy Katalog."
+            )
+        }
+    }
+
+    private func hint(symbol: String, title: String, text: String) -> some View {
         Section {
             Label {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("Nöie Barcode")
+                    Text(title)
                         .font(.subheadline.weight(.semibold))
-                    Text("Frostify kennt dä Code no nid. Gib em eimau e Name u d Mängi – bim nächschte Scan isch de aues scho usgfüut.")
+                    Text(text)
                         .font(.caption)
                         .foregroundStyle(Theme.textSecondary)
                 }
             } icon: {
-                Image(systemName: "barcode.viewfinder")
+                Image(systemName: symbol)
                     .foregroundStyle(Theme.accent)
             }
         }

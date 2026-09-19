@@ -19,6 +19,7 @@ final class AppPreferences: ObservableObject {
         static let reminderHorizonDays = "frostify.reminderHorizonDays"
         static let perItemRemindersEnabled = "frostify.perItemRemindersEnabled"
         static let perItemLeadDays = "frostify.perItemLeadDays"
+        static let usesOpenFoodFacts = "frostify.usesOpenFoodFacts"
         static let grouping = "frostify.grouping"
         static let sorting = "frostify.sorting"
     }
@@ -34,7 +35,8 @@ final class AppPreferences: ObservableObject {
             Key.reminderMinute: 0,
             Key.reminderHorizonDays: 14,
             Key.perItemRemindersEnabled: false,
-            Key.perItemLeadDays: 3
+            Key.perItemLeadDays: 3,
+            Key.usesOpenFoodFacts: true
         ])
     }
 
@@ -89,6 +91,15 @@ final class AppPreferences: ObservableObject {
     var perItemLeadDays: Int {
         get { defaults.integer(forKey: Key.perItemLeadDays) }
         set { set(min(30, max(1, newValue)), for: Key.perItemLeadDays) }
+    }
+
+    /// Darf beim Scannen eines unbekannten Codes Open Food Facts gefragt werden?
+    ///
+    /// Der eigene Katalog wird immer zuerst durchsucht; diese Einstellung
+    /// betrifft nur den Rueckfall ins Netz.
+    var usesOpenFoodFacts: Bool {
+        get { defaults.bool(forKey: Key.usesOpenFoodFacts) }
+        set { set(newValue, for: Key.usesOpenFoodFacts) }
     }
 
     var grouping: InventoryGrouping {

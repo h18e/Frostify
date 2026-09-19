@@ -20,6 +20,7 @@ struct InventoryListView: View {
     @State private var showScanner = false
     /// Der gescannte Code wartet hier, bis das Scanner-Blatt wirklich zu ist.
     @State private var scannedBarcode: String?
+    @State private var isLookingUp = false
     @State private var pendingDeletion: Item?
 
     private var table: ShelfLifeTable { inventory.shelfLifeTable }
@@ -62,6 +63,11 @@ struct InventoryListView: View {
                     .screenBackground()
                 } else {
                     list
+                }
+            }
+            .overlay {
+                if isLookingUp {
+                    lookupOverlay
                 }
             }
             .navigationTitle("Vorrat")
@@ -229,16 +235,58 @@ struct InventoryListView: View {
         Binding(get: { preferences.sorting }, set: { preferences.sorting = $0 })
     }
 
-    /// Bekannter Barcode fuellt das Formular vor, unbekannter startet ein leeres mit
-    /// gemerktem Code – der Katalogeintrag entsteht dann beim Speichern von selbst.
+    /// Drei Quellen, in dieser Reihenfolge:
+    ///
+    /// 1. **Der eigene Katalog.** Was ihr einmal erfasst habt, gilt – ohne Netz,
+    ///    ohne Wartezeit, und mit euren eigenen Namen und Mengen.
+    /// 2. **Open Food Facts**, nur bei unbekanntem Code und nur wenn erlaubt.
+    /// 3. **Leeres Formular**, wenn beides nichts hergibt.
+    ///
+    /// In jedem Fall landet beim Sichern das Ergebnis im eigenen Katalog – ab dem
+    /// zweiten Scan desselben Produkts wird also gar nichts mehr gefragt.
     private func startEditorAfterScan(barcode: String) {
         if let known = inventory.catalogProduct(forBarcode: barcode) {
             editorTarget = .create(ItemDraft(catalog: known, table: table))
-        } else {
-            var draft = ItemDraft.new(table: table)
-            draft.barcode = barcode
-            editorTarget = .create(draft)
+            return
         }
+
+        guard preferences.usesOpenFoodFacts else {
+            editorTarget = .create(draft(forUnknown: barcode, origin: .scanUnknown))
+            return
+        }
+
+        isLookingUp = true
+        Task {
+            let result = await OpenFoodFactsService.lookup(barcode: barcode)
+            isLookingUp = false
+            switch result {
+            case .found(let suggestion):
+                editorTarget = .create(ItemDraft(suggestion: suggestion, barcode: barcode, table: table))
+            case .notFound:
+                editorTarget = .create(draft(forUnknown: barcode, origin: .scanUnknown))
+            case .unavailable:
+                editorTarget = .create(draft(forUnknown: barcode, origin: .scanOffline))
+            }
+        }
+    }
+
+    private func draft(forUnknown barcode: String, origin: DraftOrigin) -> ItemDraft {
+        var draft = ItemDraft.new(table: table)
+        draft.barcode = barcode
+        draft.origin = origin
+        return draft
+    }
+
+    private var lookupOverlay: some View {
+        VStack(spacing: 12) {
+            ProgressView()
+            Text("Suech ds Produkt …")
+                .font(.subheadline)
+                .foregroundStyle(Theme.textSecondary)
+        }
+        .padding(24)
+        .background(Theme.surfaceElevated, in: RoundedRectangle(cornerRadius: Theme.cornerRadius, style: .continuous))
+        .shadow(radius: 12)
     }
 }
 

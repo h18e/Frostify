@@ -32,11 +32,15 @@ struct SettingsView: View {
                     }
                 }
 
-                Section("Ds Grät") {
+                Section {
                     NavigationLink {
                         ReminderSettingsView()
                     } label: {
                         Label("Erinnerige", systemImage: "bell")
+                    }
+
+                    Toggle(isOn: openFoodFactsBinding) {
+                        Label("Open Food Facts frage", systemImage: "globe")
                     }
 
                     Picker(selection: groupingBinding) {
@@ -54,6 +58,10 @@ struct SettingsView: View {
                     } label: {
                         Label("Sortierig", systemImage: "arrow.up.arrow.down")
                     }
+                } header: {
+                    Text("Ds Grät")
+                } footer: {
+                    Text("Bim Scanne vo eme unbekannte Barcode frogt Frostify Open Food Facts, e offeni Produktdatebank. Dörthi geit nume dr Barcode. Dy eigete Katalog het immer Vorrang – isch das us, blibt ds Formular bi neue Code eifach läär.")
                 }
 
                 aboutSection
@@ -109,6 +117,10 @@ struct SettingsView: View {
         let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "?"
         let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "?"
         return "\(version) (\(build))"
+    }
+
+    private var openFoodFactsBinding: Binding<Bool> {
+        Binding(get: { preferences.usesOpenFoodFacts }, set: { preferences.usesOpenFoodFacts = $0 })
     }
 
     private var groupingBinding: Binding<InventoryGrouping> {

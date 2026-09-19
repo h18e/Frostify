@@ -13,6 +13,7 @@ nachführen.
 | ☐ | **Versionsnummer** | `MARKETING_VERSION` und `CURRENT_PROJECT_VERSION` in `project.pbxproj` setzen. Jede Einreichung braucht eine neue Build-Nummer. |
 | ☐ | **Datenschutzerklärung veröffentlichen** | Entwurf liegt in `PRIVACY.md`. Braucht eine erreichbare URL – App Store Connect verlangt sie zwingend. |
 | ☐ | **Support-URL** | Kann eine schlichte Seite mit einer Kontaktmöglichkeit sein. Ebenfalls Pflichtfeld. |
+| ☐ | **Drittanbieter im Fragebogen angeben** | Frostify fragt beim Scannen unbekannter Barcodes Open Food Facts ab (nur der Barcode, abschaltbar). Das gehört in die App-Datenschutzangaben und ist in `PRIVACY.md` beschrieben. |
 | ☐ | **App-Datenschutzangaben** | In App Store Connect unter **App Privacy**. Frostify sammelt nichts für sich; die Daten liegen im privaten iCloud-Bereich des Nutzers. Trotzdem muss der Fragebogen ausgefüllt werden. |
 | ☐ | **Screenshots** | Pro erforderlicher Gerätegrösse. Am einfachsten aus dem Simulator mit ⌘S. |
 | ☐ | **Beschreibung, Schlüsselwörter, Kategorie** | Kategorie „Essen & Trinken" oder „Dienstprogramme". |
