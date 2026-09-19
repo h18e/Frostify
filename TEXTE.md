@@ -117,26 +117,26 @@ Wenn dir öppis nid passt: säg mer d Zile, i ändere's.
 
 `Features/Inventory/InventoryListView.swift`
 
-- Zile 54: **Dr Tiefchüeler isch läär**
-- Zile 55: **Erfass dys erschte Produkt übers Plus obe rächts.**
-- Zile 56: **Produkt erfasse**
-- Zile 65: **Vorrat**
-- Zile 66: **Name, Bemerkig oder Lagerort**
-- Zile 81: **Iitrag würklech lösche?**
-- Zile 88: **Lösche**
-- Zile 92: **Abbräche**
-- Zile 94: **Lösche nimmt dr Iitrag mitsamt em Verlouf wäg. Wenn du ne ufbrucht hesch, nimm statt däm „Aues usenäh“ – de blibt er im Archiv.**
-- Zile 110: **Gruppiere**
-- Zile 124: **Kei Träffer für „\(searchText)“.**
-- Zile 125: **Kei Produkt i dere Ampustufe.**
-- Zile 145: **Usenäh**
-- Zile 158: **Bearbeite**
-- Zile 186: **Sortiere nach**
-- Zile 192: **Filter ufhebe**
-- Zile 197: **Sortierig**
-- Zile 203: **Vo Hand erfasse**
-- Zile 206: **Barcode scanne**
-- Zile 210: **Erfasse**
+- Zile 56: **Dr Tiefchüeler isch läär**
+- Zile 57: **Erfass dys erschte Produkt übers Plus obe rächts.**
+- Zile 58: **Produkt erfasse**
+- Zile 67: **Vorrat**
+- Zile 68: **Name, Bemerkig oder Lagerort**
+- Zile 90: **Iitrag würklech lösche?**
+- Zile 97: **Lösche**
+- Zile 101: **Abbräche**
+- Zile 103: **Lösche nimmt dr Iitrag mitsamt em Verlouf wäg. Wenn du ne ufbrucht hesch, nimm statt däm „Aues usenäh“ – de blibt er im Archiv.**
+- Zile 119: **Gruppiere**
+- Zile 133: **Kei Träffer für „\(searchText)“.**
+- Zile 134: **Kei Produkt i dere Ampustufe.**
+- Zile 154: **Usenäh**
+- Zile 167: **Bearbeite**
+- Zile 195: **Sortiere nach**
+- Zile 201: **Filter ufhebe**
+- Zile 206: **Sortierig**
+- Zile 212: **Vo Hand erfasse**
+- Zile 215: **Barcode scanne**
+- Zile 219: **Erfasse**
 
 ## Vorrat – Zämefassig obe
 
@@ -193,24 +193,26 @@ Wenn dir öppis nid passt: säg mer d Zile, i ändere's.
 
 `Features/ItemEditor/ItemEditorView.swift`
 
-- Zile 44: **Iitrag bearbeite**
-- Zile 44: **Nöie Iitrag**
-- Zile 48: **Abbräche**
-- Zile 51: **Sichere**
-- Zile 89: **Bemerkig**
-- Zile 97: **Mängi**
-- Zile 114: **Portione**
-- Zile 116: **kei Angab**
-- Zile 123: **Bispiu: 400 g Rindsteak, 2 Portione, Bemerkig „2 Steaks im Sack“. Bim Usenäh rächnet d App zwüsche Mängi u Portione um.**
-- Zile 129: **Igfrore am**
-- Zile 134: **Empfohle bis**
-- Zile 137: **Uf Richtwärt zrügsetze**
-- Zile 147: **Vo Hand gsetzt – dr Richtwärt vo dr Kategorie wird nüm aagwändet.**
-- Zile 148: **Richtwärt für \(draft.category.displayName): \(table.months(for: draft.category)) Mönet.**
-- Zile 154: **z. B. Schublade 2**
-- Zile 175: **Hauft bim Finde, ohni dr ganz Tiefchüeler uszrume.**
-- Zile 185: **Wägnäh**
-- Zile 193: **Bim Sichere merkt sech Frostify Name, Kategorie, Einheit u Mängi zu däm Code. Bim nächschte Scan isch aues scho usgfüut.**
+- Zile 49: **Iitrag bearbeite**
+- Zile 49: **Nöie Iitrag**
+- Zile 53: **Abbräche**
+- Zile 56: **Sichere**
+- Zile 82: **Nöie Barcode**
+- Zile 84: **Frostify kennt dä Code no nid. Gib em eimau e Name u d Mängi – bim nächschte Scan isch de aues scho usgfüut.**
+- Zile 116: **Bemerkig**
+- Zile 124: **Mängi**
+- Zile 141: **Portione**
+- Zile 143: **kei Angab**
+- Zile 150: **Bispiu: 400 g Rindsteak, 2 Portione, Bemerkig „2 Steaks im Sack“. Bim Usenäh rächnet d App zwüsche Mängi u Portione um.**
+- Zile 156: **Igfrore am**
+- Zile 161: **Empfohle bis**
+- Zile 164: **Uf Richtwärt zrügsetze**
+- Zile 174: **Vo Hand gsetzt – dr Richtwärt vo dr Kategorie wird nüm aagwändet.**
+- Zile 175: **Richtwärt für \(draft.category.displayName): \(table.months(for: draft.category)) Mönet.**
+- Zile 181: **z. B. Schublade 2**
+- Zile 202: **Hauft bim Finde, ohni dr ganz Tiefchüeler uszrume.**
+- Zile 212: **Wägnäh**
+- Zile 220: **Bim Sichere merkt sech Frostify Name, Kategorie, Einheit u Mängi zu däm Code. Bim nächschte Scan isch aues scho usgfüut.**
 
 ## Usenäh
 
@@ -388,7 +390,7 @@ Wenn dir öppis nid passt: säg mer d Zile, i ändere's.
 
 ---
 
-**259 Täxt total.**
+**261 Täxt total.**
 
 Nid uf Mundart, mit Absicht: dr Bereich „Entwicklung" i de Istellige (nume i
 Debug-Builds sichtbar), Log-Mäudige und d Kommentär im Code. Die si für

@@ -9,11 +9,13 @@ struct ItemEditorView: View {
 
     @State private var draft: ItemDraft
     @State private var locationSuggestions: [String] = []
+    /// Wurde ein Code gescannt, den der Katalog noch nicht kennt?
+    @State private var barcodeIsNew = false
     @FocusState private var nameFocused: Bool
 
     init(target: ItemEditorTarget) {
         self.target = target
-        switch target {
+        switch target.mode {
         case .create(let draft):
             _draft = State(initialValue: draft)
         case .edit(let item):
@@ -24,13 +26,16 @@ struct ItemEditorView: View {
     private var table: ShelfLifeTable { inventory.shelfLifeTable }
 
     private var isEditing: Bool {
-        if case .edit = target { return true }
+        if case .edit = target.mode { return true }
         return false
     }
 
     var body: some View {
         NavigationStack {
             Form {
+                if barcodeIsNew {
+                    newBarcodeHint
+                }
                 productSection
                 quantitySection
                 dateSection
@@ -54,7 +59,10 @@ struct ItemEditorView: View {
             }
             .task {
                 locationSuggestions = inventory.storageLocationSuggestions()
-                if case .edit(let item) = target {
+                if let barcode = draft.barcode, !barcode.isEmpty {
+                    barcodeIsNew = inventory.catalogProduct(forBarcode: barcode) == nil
+                }
+                if case .edit(let item) = target.mode {
                     // Die Richtwerte stehen erst mit dem Repository fest, deshalb hier nachziehen.
                     draft = ItemDraft(item: item, table: table)
                 }
@@ -64,6 +72,25 @@ struct ItemEditorView: View {
     }
 
     // MARK: - Abschnitte
+
+    /// Erklaert, warum das Formular nach einem Scan leer ist: Frostify hat keinen
+    /// Produktkatalog aus dem Netz, sondern lernt Codes beim ersten Erfassen.
+    private var newBarcodeHint: some View {
+        Section {
+            Label {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Nöie Barcode")
+                        .font(.subheadline.weight(.semibold))
+                    Text("Frostify kennt dä Code no nid. Gib em eimau e Name u d Mängi – bim nächschte Scan isch de aues scho usgfüut.")
+                        .font(.caption)
+                        .foregroundStyle(Theme.textSecondary)
+                }
+            } icon: {
+                Image(systemName: "barcode.viewfinder")
+                    .foregroundStyle(Theme.accent)
+            }
+        }
+    }
 
     private var productSection: some View {
         Section("Produkt") {
@@ -210,7 +237,7 @@ struct ItemEditorView: View {
 
     private func save() {
         guard draft.isValid else { return }
-        switch target {
+        switch target.mode {
         case .create:
             inventory.createItem(from: draft)
         case .edit(let item):

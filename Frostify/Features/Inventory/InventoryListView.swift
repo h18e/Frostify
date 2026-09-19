@@ -18,6 +18,8 @@ struct InventoryListView: View {
     @State private var editorTarget: ItemEditorTarget?
     @State private var consumeTarget: ConsumeTarget?
     @State private var showScanner = false
+    /// Der gescannte Code wartet hier, bis das Scanner-Blatt wirklich zu ist.
+    @State private var scannedBarcode: String?
     @State private var pendingDeletion: Item?
 
     private var table: ShelfLifeTable { inventory.shelfLifeTable }
@@ -71,10 +73,17 @@ struct InventoryListView: View {
             .sheet(item: $consumeTarget) { target in
                 ConsumeSheet(item: target.item)
             }
-            .sheet(isPresented: $showScanner) {
+            // Das Formular wird erst geoeffnet, wenn das Scanner-Blatt zu ist.
+            // Zwei Blaetter gleichzeitig zu wechseln laesst iOS das zweite
+            // stillschweigend fallen – man scannt, und es passiert nichts.
+            .sheet(isPresented: $showScanner, onDismiss: {
+                guard let barcode = scannedBarcode else { return }
+                scannedBarcode = nil
+                startEditorAfterScan(barcode: barcode)
+            }) {
                 BarcodeScannerView { barcode in
+                    scannedBarcode = barcode
                     showScanner = false
-                    startEditorAfterScan(barcode: barcode)
                 }
             }
             .confirmationDialog(
