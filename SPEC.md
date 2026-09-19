@@ -204,9 +204,11 @@ Fest verdrahtete Liste (als Swift-Enum), Richtwert je Kategorie in `FreezerSetti
 1. Du öffnest Einstellungen → Teilen → Einladung erstellen.
 2. Die App erzeugt einen `CKShare` auf dem `Freezer`-Datensatz, setzt
    `publicPermission = .readWrite` und sichert die Änderung mit
-   `persistUpdatedShare`. *(Ohne diese beiden Schritte gilt die Freigabe nur für
-   namentlich eingeladene Personen – ein weitergeleiteter Link läuft sonst ins Leere.
-   Lektion aus dem Vorgängerprojekt.)*
+   `persistUpdatedShare`; der **zurückgegebene** Share liefert die gültige URL.
+   *(Ohne diese Schritte gilt die Freigabe nur für namentlich eingeladene Personen –
+   ein weitergeleiteter Link läuft ins Leere. Deshalb gibt es zwei getrennte Wege:
+   „Link schicke" schaltet frei und öffnet das Teilen-Blatt von iOS, „Iiladig
+   verwaute" öffnet Apples Dialog zum namentlichen Einladen.)*
 3. Du schickst den Link per iMessage/WhatsApp.
 4. Sie tippt ihn an, iOS öffnet Frostify, die Annahme wird in
    `windowScene(_:userDidAcceptCloudKitShareWith:)` verarbeitet. *(Bei einer

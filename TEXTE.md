@@ -23,9 +23,11 @@ Wenn dir öppis nid passt: säg mer d Zile, i ändere's.
 
 `App/ShareAcceptance.swift`
 
-- Zile 56: **Dr teilt Bereich het sech nid la lade. Lueg, öb du i de iOS-Istellige bi iCloud aagmäudet bisch.**
-- Zile 58: **Zum Teile muesch i de iOS-Istellige bi iCloud aagmäudet si.**
-- Zile 60: **D Iiladig het sech nid la erstelle. Probier's speter nomau.**
+- Zile 60: **Dr teilt Bereich het sech nid la lade. Lueg, öb du i de iOS-Istellige bi iCloud aagmäudet bisch.**
+- Zile 62: **Zum Teile muesch i de iOS-Istellige bi iCloud aagmäudet si.**
+- Zile 64: **D Iiladig het sech nid la erstelle. Probier's speter nomau.**
+- Zile 66: **Nume wär dr Tiefchüeler aagleit het, cha dr Link freischaute.**
+- Zile 68: **iCloud het no kei Link glieferet. Lueg, öb du Netz hesch, u probier's nomau.**
 
 ## Ampu & Restlaufzyt
 
@@ -298,29 +300,38 @@ Wenn dir öppis nid passt: säg mer d Zile, i ändere's.
 
 `Features/Settings/SharingView.swift`
 
-- Zile 33: **Teile**
-- Zile 51: **Teile nid möglech**
-- Zile 65: **Tiefchüeler**
-- Zile 68: **Nid teilt**
-- Zile 68: **Für di freiggä**
-- Zile 71: **Teilt**
-- Zile 89: **D Iiladig wird vorbereitet …**
-- Zile 93: **Tiefchüeler teile**
-- Zile 93: **D Iiladig verwaute**
-- Zile 100: **Es geit dr Dialog vo Apple uf: dert wählsch, wie du dr Link verschicksch. Dyni Partnerin tippt ne aa, iOS macht Frostify uf, u ab de gseht dir beidi dr glych Vorrat.**
-- Zile 106: **Dä Tiefchüeler isch dir freiggä worde. Änderige gseht dir beidi glych.**
-- Zile 109: **D Freigab beände chasch übere Iiladigs-Link oder i de iCloud-Istellige under „Mit dir geteilt“.**
-- Zile 114: **Teilnähmer**
-- Zile 128: **Beidi bruuche ne eigeti Apple-ID u ne iCloud-Aamäudig.**
-- Zile 129: **Ohni Netz schaffet Frostify normau wyter u glycht speter ab.**
-- Zile 130: **Glychzytigi Verbrüch göh nid verlore – si wärde zämezeut.**
-- Zile 132: **Guet z wüsse**
-- Zile 148: **Bsitzer**
-- Zile 148: **Iiglade Person**
-- Zile 155: **Iiglade**
-- Zile 163: **pendänt**
-- Zile 168: **darf ändere**
-- Zile 168: **nume läse**
+- Zile 39: **Teile**
+- Zile 57: **Teile beände?**
+- Zile 58: **Beände**
+- Zile 64: **Abbräche**
+- Zile 66: **Dyni Partnerin gseht dr Tiefchüeler de nüm. Dyni Date blibe bi dir.**
+- Zile 69: **Teile nid möglech**
+- Zile 85: **Tiefchüeler**
+- Zile 88: **Nid teilt**
+- Zile 88: **Für di freiggä**
+- Zile 91: **Teilt**
+- Zile 96: **Link**
+- Zile 97: **Für aui, wo ne hei**
+- Zile 97: **Nume für Iiglademi**
+- Zile 116: **Link schicke**
+- Zile 125: **Schautet dr Link für aui frei, wo ne hei, u macht ds Teile-Blatt vo iOS uf. Das isch dr Wäg, wo funktioniert, wenn du dr Link eifach witerschicksch.**
+- Zile 139: **Iiladig verwaute**
+- Zile 148: **Apples Dialog: Lüt namentlech iilade, Rächt setze, Teilnähmer aaluege.**
+- Zile 157: **Teile beände**
+- Zile 164: **Dä Tiefchüeler isch dir freiggä worde. Änderige gseht dir beidi glych.**
+- Zile 167: **D Freigab beände chasch übere Iiladigs-Link oder i de iCloud-Istellige under „Mit dir geteilt“.**
+- Zile 172: **Teilnähmer**
+- Zile 186: **Beidi bruuche ne eigeti Apple-ID u ne iCloud-Aamäudig.**
+- Zile 187: **Frostify muess uf em Handy vo dr Partnerin scho installiert si, bevor si dr Link atippt.**
+- Zile 188: **Ohni Netz schaffet Frostify normau wyter u glycht speter ab.**
+- Zile 189: **Glychzytigi Verbrüch göh nid verlore – si wärde zämezeut.**
+- Zile 191: **Guet z wüsse**
+- Zile 209: **Bsitzer**
+- Zile 209: **Iiglade Person**
+- Zile 216: **Iiglade**
+- Zile 224: **pendänt**
+- Zile 229: **darf ändere**
+- Zile 229: **nume läse**
 
 ## Istellige → Haltbarkeit
 
@@ -363,7 +374,7 @@ Wenn dir öppis nid passt: säg mer d Zile, i ändere's.
 
 ---
 
-**234 Täxt total.**
+**245 Täxt total.**
 
 Nid uf Mundart, mit Absicht: dr Bereich „Entwicklung" i de Istellige (nume i
 Debug-Builds sichtbar), Log-Mäudige und d Kommentär im Code. Die si für

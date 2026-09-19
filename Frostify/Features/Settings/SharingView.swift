@@ -7,7 +7,9 @@ struct SharingView: View {
     @StateObject private var service = CloudSharingService()
 
     @State private var share: CKShare?
-    @State private var showSharingController = false
+    @State private var invitationTarget: InvitationTarget?
+    @State private var linkTarget: LinkTarget?
+    @State private var confirmStop = false
     @State private var reloadToken = 0
 
     private var freezer: Freezer { inventory.currentFreezer() }
@@ -17,7 +19,11 @@ struct SharingView: View {
             statusSection
 
             if service.isOwner(of: freezer) {
-                ownerSection
+                linkSection
+                invitationSection
+                if share != nil {
+                    stopSection
+                }
             } else {
                 participantSection
             }
@@ -35,17 +41,29 @@ struct SharingView: View {
         .task(id: reloadToken) {
             share = service.existingShare(for: freezer)
         }
-        .sheet(isPresented: $showSharingController, onDismiss: { reloadToken += 1 }) {
-            if let share {
-                CloudSharingSheet(
-                    share: share,
-                    container: service.cloudContainer,
-                    title: freezer.displayName
-                ) {
+        .sheet(item: $invitationTarget, onDismiss: { reloadToken += 1 }) { target in
+            CloudSharingSheet(
+                share: target.share,
+                container: service.cloudContainer,
+                title: freezer.displayName,
+                onFinish: { reloadToken += 1 },
+                onFailed: { service.errorMessage = $0.localizedDescription }
+            )
+            .ignoresSafeArea()
+        }
+        .sheet(item: $linkTarget, onDismiss: { reloadToken += 1 }) { target in
+            ActivityView(items: [target.url])
+        }
+        .confirmationDialog("Teile beände?", isPresented: $confirmStop, titleVisibility: .visible) {
+            Button("Beände", role: .destructive) {
+                Task {
+                    await service.stopSharing(freezer)
                     reloadToken += 1
                 }
-                .ignoresSafeArea()
             }
+            Button("Abbräche", role: .cancel) {}
+        } message: {
+            Text("Dyni Partnerin gseht dr Tiefchüeler de nüm. Dyni Date blibe bi dir.")
         }
         .alert(
             "Teile nid möglech",
@@ -60,51 +78,91 @@ struct SharingView: View {
         }
     }
 
+    // MARK: - Abschnitte
+
     private var statusSection: some View {
         Section {
             LabeledContent("Tiefchüeler", value: freezer.displayName)
             LabeledContent("Status") {
                 if share == nil {
                     Text(service.isOwner(of: freezer) ? "Nid teilt" : "Für di freiggä")
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Theme.textSecondary)
                 } else {
                     Label("Teilt", systemImage: "person.2.fill")
-                        .foregroundStyle(.green)
+                        .foregroundStyle(Theme.stateFine)
+                }
+            }
+            if share != nil, service.isOwner(of: freezer) {
+                LabeledContent("Link") {
+                    Text(service.linkIsOpen(for: freezer) ? "Für aui, wo ne hei" : "Nume für Iiglademi")
+                        .foregroundStyle(service.linkIsOpen(for: freezer) ? Theme.stateFine : Theme.stateSoon)
                 }
             }
         }
     }
 
-    private var ownerSection: some View {
+    /// Der Weg, der zum Weiterschicken taugt – deshalb steht er zuoberst.
+    private var linkSection: some View {
         Section {
             Button {
                 Task {
-                    share = await service.shareOrCreate(for: freezer)
-                    if share != nil { showSharingController = true }
+                    if let url = await service.prepareLink(for: freezer) {
+                        linkTarget = LinkTarget(url: url)
+                        reloadToken += 1
+                    }
                 }
             } label: {
-                if service.isWorking {
-                    HStack {
+                HStack {
+                    Label("Link schicke", systemImage: "link")
+                    if service.isPreparingLink {
+                        Spacer()
                         ProgressView()
-                        Text("D Iiladig wird vorbereitet …")
                     }
-                } else {
-                    Label(
-                        share == nil ? "Tiefchüeler teile" : "D Iiladig verwaute",
-                        systemImage: share == nil ? "person.badge.plus" : "person.2.badge.gearshape"
-                    )
                 }
             }
-            .disabled(service.isWorking)
+            .disabled(service.isPreparingLink)
         } footer: {
-            Text("Es geit dr Dialog vo Apple uf: dert wählsch, wie du dr Link verschicksch. Dyni Partnerin tippt ne aa, iOS macht Frostify uf, u ab de gseht dir beidi dr glych Vorrat.")
+            Text("Schautet dr Link für aui frei, wo ne hei, u macht ds Teile-Blatt vo iOS uf. Das isch dr Wäg, wo funktioniert, wenn du dr Link eifach witerschicksch.")
+        }
+    }
+
+    private var invitationSection: some View {
+        Section {
+            Button {
+                Task {
+                    if let share = await service.invitationShare(for: freezer) {
+                        invitationTarget = InvitationTarget(share: share)
+                    }
+                }
+            } label: {
+                HStack {
+                    Label("Iiladig verwaute", systemImage: "person.2.badge.gearshape")
+                    if service.isPreparingInvitation {
+                        Spacer()
+                        ProgressView()
+                    }
+                }
+            }
+            .disabled(service.isPreparingInvitation)
+        } footer: {
+            Text("Apples Dialog: Lüt namentlech iilade, Rächt setze, Teilnähmer aaluege.")
+        }
+    }
+
+    private var stopSection: some View {
+        Section {
+            Button(role: .destructive) {
+                confirmStop = true
+            } label: {
+                Label("Teile beände", systemImage: "person.2.slash")
+            }
         }
     }
 
     private var participantSection: some View {
         Section {
             Text("Dä Tiefchüeler isch dir freiggä worde. Änderige gseht dir beidi glych.")
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Theme.textSecondary)
         } footer: {
             Text("D Freigab beände chasch übere Iiladigs-Link oder i de iCloud-Istellige under „Mit dir geteilt“.")
         }
@@ -117,7 +175,7 @@ struct SharingView: View {
                     Text(displayName(for: participant))
                     Text(statusText(for: participant))
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Theme.textSecondary)
                 }
             }
         }
@@ -126,6 +184,7 @@ struct SharingView: View {
     private var explanationSection: some View {
         Section {
             Label("Beidi bruuche ne eigeti Apple-ID u ne iCloud-Aamäudig.", systemImage: "person.2")
+            Label("Frostify muess uf em Handy vo dr Partnerin scho installiert si, bevor si dr Link atippt.", systemImage: "iphone")
             Label("Ohni Netz schaffet Frostify normau wyter u glycht speter ab.", systemImage: "wifi.slash")
             Label("Glychzytigi Verbrüch göh nid verlore – si wärde zämezeut.", systemImage: "arrow.triangle.merge")
         } header: {
@@ -133,6 +192,8 @@ struct SharingView: View {
         }
         .font(.footnote)
     }
+
+    // MARK: - Hilfen
 
     private func displayName(for participant: CKShare.Participant) -> String {
         if let components = participant.userIdentity.nameComponents {
@@ -168,4 +229,15 @@ struct SharingView: View {
         let permission = participant.permission == .readWrite ? "darf ändere" : "nume läse"
         return "\(role) · \(status) · \(permission)"
     }
+}
+
+/// `.sheet(item:)` braucht identifizierbare Werte.
+private struct InvitationTarget: Identifiable {
+    let share: CKShare
+    var id: String { share.recordID.recordName }
+}
+
+private struct LinkTarget: Identifiable {
+    let url: URL
+    var id: String { url.absoluteString }
 }

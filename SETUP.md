@@ -172,10 +172,22 @@ Das ist der Teil, der sich nur echt testen lässt.
 **Auf deinem iPhone:**
 
 1. Frostify öffnen, zwei, drei Produkte erfassen
-2. Tab **Einstellungen** → **Teilen**
-3. **Tiefkühler teilen** antippen
-4. Es öffnet sich Apples Dialog. Wähle eine Versandart (z. B. Nachrichten) und
-   schicke den Link an deine Partnerin
+2. Tab **Istellige** → **Teile**
+3. **Link schicke** antippen ← *nicht* „Iiladig verwaute"
+4. Das Teilen-Blatt von iOS geht auf. Schick den Link an deine Partnerin
+
+> **Warum „Link schicke" und nicht der andere Knopf:** Eine frisch erstellte
+> CloudKit-Freigabe steht auf „nur namentlich eingeladene Personen". Ein so
+> verschickter Link ist technisch gültig, aber für niemanden freigeschaltet –
+> beim Empfänger endet er mit *„Objekt nicht verfügbar. Die Person, der die Datei
+> gehört, teilt diese nicht mehr…"*. **Link schicke** schaltet die Reichweite
+> vorher ausdrücklich frei und speichert sie nach iCloud.
+>
+> **Iiladig verwaute** ist für den anderen Fall: Leute namentlich einladen,
+> Rechte setzen, Teilnehmer ansehen, Freigabe beenden.
+>
+> Unter **Status → Link** siehst du jederzeit, ob der Link für alle offen ist
+> („Für aui, wo ne hei") oder nicht („Nume für Iiglademi").
 
 **Auf ihrem iPhone:**
 
@@ -249,6 +261,7 @@ inklusive der Zeile mit `Thread 1:` oder `Fatal error:`.
 | `hapticpatternlibrary.plist konnte nicht geöffnet werden` | Simulator-Rauschen der Tastatur, hat mit Frostify nichts zu tun. Auf einem echten Gerät tritt es nicht auf |
 | `Could not validate account info cache` | Begleitmeldung zu fehlender iCloud-Anmeldung, unkritisch |
 | Freigabe-Link öffnet die App nicht | App muss auf dem Zielgerät installiert sein, bevor der Link angetippt wird |
+| `Objekt nicht verfügbar. Die Person, der die Datei gehört, teilt diese nicht mehr oder dein Account ist nicht berechtigt, sie zu öffnen` | Der Link wurde über „Iiladig verwaute" verschickt und steht auf „nur eingeladene Personen". Lösung: in Frostify **Istellige → Teile → Link schicke** antippen und den Link neu verschicken. Der bestehende Link wird dabei freigeschaltet, die URL bleibt dieselbe |
 | `The file "Frostify.xcodeproj" couldn't be opened` | Xcode zu alt – es braucht Xcode 26 oder neuer |
 
 ---

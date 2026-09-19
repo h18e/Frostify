@@ -49,6 +49,10 @@ enum SharingError: LocalizedError {
     case sharedStoreUnavailable
     case noCloudAccount
     case shareCreationFailed
+    /// Nur wer den Tiefkuehler angelegt hat, kann die Reichweite des Links aendern.
+    case notOwner
+    /// iCloud hat noch keinen Link geliefert (z. B. kein Netz beim Speichern).
+    case linkUnavailable
 
     var errorDescription: String? {
         switch self {
@@ -58,6 +62,10 @@ enum SharingError: LocalizedError {
             return "Zum Teile muesch i de iOS-Istellige bi iCloud aagmäudet si."
         case .shareCreationFailed:
             return "D Iiladig het sech nid la erstelle. Probier's speter nomau."
+        case .notOwner:
+            return "Nume wär dr Tiefchüeler aagleit het, cha dr Link freischaute."
+        case .linkUnavailable:
+            return "iCloud het no kei Link glieferet. Lueg, öb du Netz hesch, u probier's nomau."
         }
     }
 }
